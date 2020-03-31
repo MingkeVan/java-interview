@@ -25,7 +25,7 @@ public class BinaryTree {
     }
 
     public List<Integer> inOrderNonRecursive() {
-        return inOrderNonRecursive(this.root);
+        return inorderTraversal(this.root);
     }
 
     public List<Integer> preOrderNonRecursive() {
@@ -82,7 +82,7 @@ public class BinaryTree {
         return results;
     }
 
-    public List<Integer> inOrderNonRecursive(TreeNode root) {
+    public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> results = new ArrayList<>();
         if (root == null) {
             return results;
@@ -142,16 +142,16 @@ public class BinaryTree {
 
     public static void main(String[] args) {
         BinaryTree tree = new BinaryTree();
-        tree.root = new TreeNode(null, null, 3);
-        tree.root.left = new TreeNode(null, null, 2);
-        tree.root.right = new TreeNode(null, null, 7);
+        tree.root = new TreeNode(3);
+        tree.root.left = new TreeNode(2);
+        tree.root.right = new TreeNode(7);
 
-        tree.root.left.left = new TreeNode(null, null, 4);
-        tree.root.left.right = new TreeNode(null, null, 5);
+        tree.root.left.left = new TreeNode(4);
+        tree.root.left.right = new TreeNode(5);
 
 
-        tree.root.right.left = new TreeNode(null, null, 7);
-        tree.root.right.right = new TreeNode(null, null, 1);
+        tree.root.right.left = new TreeNode(7);
+        tree.root.right.right = new TreeNode(1);
         List<Integer> arr1 = tree.preOrderNonRecursive();
         System.out.println(arr1);
         List<Integer> arr2 = tree.inOrderNonRecursive();
@@ -166,9 +166,9 @@ public class BinaryTree {
         TreeNode right;
         int val;
 
-        TreeNode(TreeNode l, TreeNode r, int v) {
-            this.left = l;
-            this.right = r;
+        TreeNode(int v) {
+            this.left = null;
+            this.right = null;
             this.val = v;
         }
 
