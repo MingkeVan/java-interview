@@ -1,4 +1,4 @@
-package leetcode.StacksAndQueue;
+package leetcode.stack;
 
 import java.util.Deque;
 import java.util.Iterator;
