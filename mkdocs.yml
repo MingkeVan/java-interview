@@ -1,0 +1,12 @@
+site_name: JavaInterview
+nav:
+    # - Home: index.md
+    - Java基础: interview-java-basic.md
+    - Spring: interview-java-spring.md
+    - Mysql: interview-sql.md
+    - Redis: interview-redis.md
+    - 操作系统: interview-os.md
+    - Linux: interview-os-linux.md
+    - 计算机网络: interview-network.md
+    - About: about.md
+theme: readthedocs
