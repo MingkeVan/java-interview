@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Mysql - JavaInterview</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Mysql";
+    var mkdocs_page_input_path = "interview-sql.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> JavaInterview</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-java-basic/">Java基础</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-java-spring/">Spring</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Mysql</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#acid">ACID</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#sql">SQL</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#mvcc">多版本并发控制MVCC</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#next-key-locks">Next-Key Locks</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#innodbmyisam">InnoDB和MyISAM的区别</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_1">索引的优点</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">索引的使用场景</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_3">优化数据访问</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_4">重构查询方式</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_5">复制</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_6">索引</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-redis/">Redis</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-os/">操作系统</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-os-linux/">Linux</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-network/">计算机网络</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">JavaInterview</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Mysql</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="mysql">MySQL数据库</h1>
+<h2 id="acid">ACID</h2>
+<ul>
+<li>
+<p>ACID 原子性 一致性 隔离性 持久性：</p>
+</li>
+<li>
+<p>原子性。事务要么执行成功，要么执行失败</p>
+</li>
+<li>一致性。事务执行前后，应该保持一致性状态</li>
+<li>隔离性。事务执行成功前，所做修改不应该被其他事务看到</li>
+<li>持久性。一旦事务提交，其所做更改将永远保存到数据库。可通过数据库备份和恢复来实现。</li>
+</ul>
+<p>无并发情况下，事务串行执行，原子性可以保证一致性；</p>
+<p>并发情况下，原子性和隔离性共同保证一致性</p>
+<p>持久性防止数据库崩溃</p>
+<ul>
+<li>
+<p>并发一致性问题</p>
+</li>
+<li>
+<p>丢失修改。事务一覆盖了事务二的修改</p>
+</li>
+<li>脏读。读到其他事物为提交的数据</li>
+<li>不可重复读。事务重复读取的结果不一致</li>
+<li>幻读。读取范围数据时，得到的结果不一致。比如求count</li>
+</ul>
+<p>并发一致性问题主要是因为破坏了事务的隔离性而导致，可以通过事务隔离级别来解决（其实是通过并发控制保证隔离性，并发控制可以通过封锁实现，但是数据库提供的事务隔离级别，可以让用户更轻松的实现隔离性）</p>
+<ul>
+<li>
+<p>封锁：粒度有行级锁，表锁(行锁是针对索引加的锁，只有通过索引检索数据，innodb才使用行级锁)</p>
+</li>
+<li>
+<p>封锁类型：X锁（排它锁，只允许当前事务读和写） S锁（共享锁  只允许当前事务读和其他事务读）</p>
+<ul>
+<li>select...for update</li>
+<li>select...lock in shard mode</li>
+</ul>
+</li>
+<li>临时锁和持久锁：有效时期到当前语句结束还是当前事务结束</li>
+<li>
+<p>运用X锁和S锁，何时申请 持续时间 何时释放等 需要封锁协议去控制</p>
+<ul>
+<li>一级封锁协议</li>
+<li>二级封锁协议</li>
+<li>三级封锁协议</li>
+<li>两段锁协议，可能导致死锁</li>
+</ul>
+</li>
+<li>
+<p>事务隔离级别</p>
+</li>
+<li>
+<p>未提交读 ：解决丢失修改问题。实现：通过对写操作加持续X锁实现，阻塞其他事务写但不阻塞读</p>
+</li>
+<li>已提交读 解决脏读。实现：通过对写操作加持续-X锁，阻塞其他事务写和读</li>
+<li>可重复读 解决不可重复读。实现：通过对读操作加临时-S锁，阻塞写操作，对写操作加持续-X锁</li>
+<li>可串行化 解决幻读。实现：可以通过写操作加持续-X锁，读操作加持续-S锁</li>
+</ul>
+<p>通过乐观锁或悲观锁解决丢失修改问题：</p>
+<ul>
+<li>乐观锁通过增加版本号列（如时间戳）检查时间戳改变</li>
+<li>
+<p>悲观锁则通过提交修改时，先加锁查询（select...for update nowait）是否有更新，然后提交修改</p>
+</li>
+<li>
+<p>死锁</p>
+</li>
+<li>
+<p>InnoDB处理死锁的方式是通过检测拥有最少行级排它锁的事务 进行回滚</p>
+</li>
+<li>
+<p>事务日志</p>
+</li>
+<li>
+<p>存储引擎在修改数据时，只需修改内存拷贝中的数据，同时将该修改行为记录到硬盘上的事务日志中。不用管该修改什么时候持久到磁盘，可以提高事务执行效率。</p>
+</li>
+<li>数据未写回磁盘而崩溃时，存储引擎重启后可以自动恢复。</li>
+<li>事务日志采取的是追加的方式</li>
+</ul>
+<h2 id="sql">SQL</h2>
+<p>where 过滤行 group by过滤分组</p>
+<pre><code class="sql">SELECT col, COUNT(*) AS num
+FROM mytable
+WHERE col &gt; 2
+GROUP BY col
+HAVING num &gt;= 2;
+</code></pre>
+
+<p>Group By默认会按照分组字段排序 可以通过制定Order By指定排序字段</p>
+<pre><code>SELECT col, COUNT(*) AS num
+FROM mytable
+GROUP BY col
+ORDER BY num;
+</code></pre>
+
+<h2 id="mvcc">多版本并发控制MVCC</h2>
+<p>MVCC是MySQL中实现提交读和可重复读两种事务隔离级别的实现方式。</p>
+<p>通过版本号实现，包括系统版本号和事务版本号，以及每行记录后有两个隐藏列 创建版本号和删除版本号</p>
+<p>读数据分为快照读和当前读</p>
+<h2 id="next-key-locks">Next-Key Locks</h2>
+<p>MySQL的InnoDB存储引擎的一种锁实现，可以解决幻读，使用MVCC加Record Locks</p>
+<p>Next-Key Locks可以锁定一个范围，通过record lock锁定记录的索引，通过Gap Locks锁定索引之间的间隙</p>
+<p>select c from ... where c between 1 and 10 for update</p>
+<p><strong>锁的算法</strong>：</p>
+<ul>
+<li>记录锁。加载索引记录上的锁，是行锁，使用索引作为where的过滤条件时，加记录锁；如果不用索引，则加表锁</li>
+<li>间隙锁。锁定范围</li>
+<li>next-key lock。上述两种锁的结合，锁定当前行，以及当前行前边的间隙。</li>
+</ul>
+<h2 id="innodbmyisam">InnoDB和MyISAM的区别</h2>
+<p>InnoDB特性：基于MVCC实现高并发，并实现四种事务隔离级别，默认级别是可重复读，并可以通过next-key lock策略防止幻读的出现，这种锁不仅锁行，还锁间隙，防止幻影行的插入。</p>
+<p>InnoDB的表示基于聚簇索引建立的，对主键查询有很高的性能。二级索引必须包含主键列，所以主键列要尽可能小。</p>
+<p>一些优化：磁盘读取数据时的可预测性预读、自动创建自适应hash索引、加速插入操作的插入缓冲区</p>
+<p>InnoDB 支持事务处理与外键和行级锁，MyISAM是表锁，且不支持事务和外键</p>
+<p>MyISAM强调的是性能，每次查询具有原子性，执行速度比InnoDB快</p>
+<p>MyISAM的索引和数据是分开的，存放在内存中的是索引，且索引可以压缩，占用内存少</p>
+<p>InnoDB存放在内存中的是索引+数据。</p>
+<p>MyISAM支持全文索引，InnoDB不支持</p>
+<p><strong>对比</strong>：InnoDB适合写密集的表，MyISAM适合读密集的表</p>
+<h3 id="_1">索引的优点</h3>
+<ul>
+<li>大大减少服务器需要扫描的数据行数</li>
+<li>帮助服务器避免进行排序和分组，以及避免创建临时表</li>
+<li>将随机IO变为顺序IO</li>
+</ul>
+<h3 id="_2">索引的使用场景</h3>
+<ul>
+<li>非常小的表，全局扫描更有优势</li>
+<li>大到中型的表，索引较有效</li>
+</ul>
+<h3 id="_3">优化数据访问</h3>
+<p>减少请求的数据量；减少服务端扫描的行数（覆盖索引）</p>
+<h3 id="_4">重构查询方式</h3>
+<p>1、切分大查询；</p>
+<p>2、分解大连接查询</p>
+<ul>
+<li>让缓存更高效</li>
+<li>分解成多个单表查询</li>
+<li>减少锁竞争</li>
+<li>在应用层进行连接，更容易对数据库进行拆分</li>
+</ul>
+<h2 id="_5">复制</h2>
+<p>主从复制：</p>
+<ul>
+<li>binlog线程，将主服务器对数据的更改写入log</li>
+<li>I/O线程：从主服务器读取二进制log，写入从服务器中的重放log（replay log）</li>
+<li>SQL线程：读取重放日志，并重放其中的SQL语句<img alt="img" src="https://github.com/CyC2018/CS-Notes/raw/master/pics/master-slave.png" /></li>
+</ul>
+<p>读写分离：主服务器读（实时性要求较高的读操作）/写 从服务器读</p>
+<h2 id="_6">索引</h2>
+<p>聚集索引：聚集索引规定数据在表中的物理存储顺序，InnoDB引擎支持聚集索引</p>
+<p>非聚集索引：使用二叉树，且叶子结点不存储数据行，而是存储指向数据行的指针</p>
+<p>主索引和辅助索引，主索引为主键索引，叶子结点存储数据行，辅助索引叶子结点存放主键的值</p>
+<p>覆盖索引：可以只通过辅助索引就可以查询到的记录，而不需要通过主键索引</p>
+<p>联合索引：通过多个列组成索引</p>
+<ul>
+<li>索引顺序是ab 则查询a或者 ab可以用联合索引 select from where a =  and b = </li>
+<li>联合索引的第二个好处是对第二个键值做了排序 。select from where a = order by b.</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../interview-redis/" class="btn btn-neutral float-right" title="Redis">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../interview-java-spring/" class="btn btn-neutral" title="Spring"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../interview-java-spring/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../interview-redis/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

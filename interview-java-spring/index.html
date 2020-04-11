@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Spring - JavaInterview</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Spring";
+    var mkdocs_page_input_path = "interview-java-spring.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> JavaInterview</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-java-basic/">Java基础</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Spring</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#spring_1">Spring经典课程</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#iocdi">什么是IOC和DI，优缺点？</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#spring_2">spring 容器有几种，有什么区别？</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#spring-bean">Spring bean的生命周期</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#spring-bean_1">Spring Bean的五种作用域</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#spring-bean_2">spring bean的注入方式</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#spring-boot-bean">spring-boot 注册bean的几种方式</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#spring-aop">Spring AOP原理</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-sql/">Mysql</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-redis/">Redis</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-os/">操作系统</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-os-linux/">Linux</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-network/">计算机网络</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">JavaInterview</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Spring</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="spring">Spring</h1>
+<h2 id="spring_1">Spring经典课程</h2>
+<p>spring 基于注解驱动课程，强烈推荐，讲透spring基于注解的使用和原理。 https://www.bilibili.com/video/av71252572?p=7</p>
+<h2 id="iocdi">什么是IOC和DI，优缺点？</h2>
+<p>IOC，控制反转。顾名思义，控制权发生了反转。以前A依赖B，是由A主动创建B对象，现在则是A需要B的时候，由IOC容器主动创建一个B对象给A。</p>
+<p>DI，依赖注入。实现IOC的方式就通过依赖注入。</p>
+<p><strong>优点</strong>：便于解耦</p>
+<p><strong>缺点</strong>：引入第三方IOC容器，且对象通过反射生成，损失运行效率，需要额外配置。</p>
+<h2 id="spring_2">spring 容器有几种，有什么区别？</h2>
+<p>BeanFactory 工厂类</p>
+<p>ApplicationContext - ApplicationContext扩展了BeanFactory接口。</p>
+<table>
+<thead>
+<tr>
+<th>BeanFactory</th>
+<th>ApplicationContext</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>懒加载</td>
+<td>即时加载</td>
+</tr>
+<tr>
+<td>显式提供资源</td>
+<td>自己创建和管理</td>
+</tr>
+<tr>
+<td>不支持国际化</td>
+<td>支持国际化</td>
+</tr>
+<tr>
+<td>不支持基于依赖的注解</td>
+<td>支持基于依赖的注解</td>
+</tr>
+</tbody>
+</table>
+<h2 id="spring-bean">Spring bean的生命周期</h2>
+<ul>
+<li>容器调用构造函数创建对象</li>
+<li>设置对象属性</li>
+<li>XXXAware接口执行对应的setXXX方法</li>
+<li>BeanNameAware</li>
+<li>BeanFactoryAware</li>
+<li>ApplicationContextAware</li>
+<li>后置处理器 在初始化方法之前</li>
+<li>初始化的几种方式，按照从上到下的顺序：</li>
+<li>postconstructor注解</li>
+<li>继承intializingBean接口 afterPropertiesSet方法</li>
+<li>@Bean(initMethod="") 指定初始化方法</li>
+<li>后置处理器 在初始化方法之后</li>
+<li>销毁的几种方法，按照从上到下的顺序：</li>
+<li>@PreDestroy</li>
+<li>继承disposabBean接口 </li>
+<li>@Bean(destroyMethod="") 指定销毁方法</li>
+</ul>
+<p>https://github.com/Snailclimb/JavaGuide/blob/master/docs/system-design/framework/spring/SpringInterviewQuestions.md#55-spring-%E4%B8%AD%E7%9A%84-bean-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F</p>
+<p><img alt="img" src="https://pic1.zhimg.com/80/v2-baaf7d50702f6d0935820b9415ff364c_hd.jpg" /></p>
+<p><img alt="img" src="https://pic3.zhimg.com/80/754a34e03cfaa40008de8e2b9c1b815c_hd.jpg" /></p>
+<h2 id="spring-bean_1">Spring Bean的五种作用域</h2>
+<p>singleton prototype request sesssion global-session</p>
+<h2 id="spring-bean_2">spring bean的注入方式</h2>
+<ul>
+<li>
+<p>属性注入方式</p>
+</li>
+<li>
+<p>构造函数注入</p>
+</li>
+<li>
+<p>工厂方法注入</p>
+</li>
+<li>
+<p>XXXaware注入。继承XXXaware可以获取iioc容器中的某些底层bean，获取方法是通过XXXAwareProcessor后置处理器取出bean。</p>
+</li>
+</ul>
+<p>autowired 可以用在变量、方法、构造函数上。</p>
+<h2 id="spring-boot-bean">spring-boot 注册bean的几种方式</h2>
+<p>https://blog.csdn.net/majunzhu/article/details/79199752</p>
+<ul>
+<li>@Configuration+@Bean的方式注入 </li>
+<li>(@Controller @Service @Repository @Component) +@ComponentScan</li>
+<li>@Import注解可以导入其他类中bean</li>
+<li>导入其他类，bean的默认id是全类名</li>
+<li>导入继承ImportSelector的class，通过selectImport方法返回组件的全类名数组</li>
+<li>导入ImportBeanDefinitionRegister.class,手动获取IOC容器，并注入自定义id的bean</li>
+<li>通过spring提供的FactoryBean</li>
+<li>默认获取到的是工厂bean调用getObject创建的对象</li>
+<li>要获得工厂bean本身，需要在id前加个&amp;。</li>
+</ul>
+<h2 id="spring-aop">Spring AOP原理</h2>
+<p>https://www.imooc.com/video/15690</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../interview-sql/" class="btn btn-neutral float-right" title="Mysql">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../interview-java-basic/" class="btn btn-neutral" title="Java基础"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../interview-java-basic/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../interview-sql/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

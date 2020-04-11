@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>计算机网络 - JavaInterview</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "\u8ba1\u7b97\u673a\u7f51\u7edc";
+    var mkdocs_page_input_path = "interview-network.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> JavaInterview</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-java-basic/">Java基础</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-java-spring/">Spring</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-sql/">Mysql</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-redis/">Redis</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-os/">操作系统</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-os-linux/">Linux</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">计算机网络</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#cookiesession">cookie/session的机制与安全</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#http10-http11-http20-https">http1.0 http1.1 http2.0 https</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#http">http</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">网络</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">计算机网络体系结构</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ping">ping</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#tcpudp">TCP与UDP</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">JavaInterview</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>计算机网络</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="_1">网络</h1>
+<h2 id="cookiesession">cookie/session的机制与安全</h2>
+<ul>
+<li>https://harttle.land/2015/08/10/cookie-session.html（机制与安全 讲的非常透彻）</li>
+<li>https://blog.csdn.net/malimingwq/article/details/79689050</li>
+<li>https://juejin.im/post/59d1f59bf265da06700b0934（有例子）</li>
+<li>session存在服务器端 内存 或者 Redis 甚至数据库</li>
+<li>session存储完会生成sessionID 并通过setcookie字段 添加cookie</li>
+<li>cookie防篡改 是通过签名技术 对每个cookie项添加签名</li>
+<li>通常cookie中不存敏感信息 而是只存sessionID 敏感信息存在session中</li>
+<li>cookie不可跨域名使用 但是同一个一级域名下的二级域名(wenku.baidu.com和zhidao.baidu.com)可以通用 可以通过cookie.setDomain(".baidu.com")设置 ,这个cookie就可以在多个二级域名间共享，但是不影响其他cookie</li>
+<li>cookie的路径 比如登录cookie只能在登录页面使用 可以通过cookie.setPath("/login/")，这样这个cookie就只能在login页面使用</li>
+<li>cookie的安全性</li>
+<li>cookie.setSecure(true) 确保cookie只能通过HTTPS传输</li>
+<li>cookie.setHttpOnly(true)可以防止XSS攻击 即通过js脚本获取cookie </li>
+</ul>
+<h2 id="http10-http11-http20-https">http1.0 http1.1 http2.0 https</h2>
+<ul>
+<li>http1.0:需要使用keep-alive参数手动建立长连接。规定浏览器和服务器保持比较短时间的链接，浏览器每次请求都和服务器经过三次握手和慢启动建立TCP链接。</li>
+<li>http1.1：</li>
+<li>默认长连接，即允许多次利用单个tcp连接，避免重复握手、慢启动创建连接</li>
+<li>支持流水线：复用一个tcp连接，但是若干个请求是串行化处理的，一旦某请求超时，就会出现线头阻塞</li>
+<li>支持同时打开多个TCP连接</li>
+<li>支持虚拟主机：多个站点可以共享同一个ip和端口</li>
+<li>新增状态码100：支持只发送header信息。客户端接收到100，说明有权限，再接着发送请求body</li>
+<li>支持分块传输编码</li>
+<li>http2.0：</li>
+<li>多路复用：多个请求可以在一个连接上并行执行</li>
+<li>header压缩：减少数据体积</li>
+<li>服务端推送：客户端请求数据时，顺便将一些客户端需要的资源推送到客户端，避免客户端创建更多连接</li>
+</ul>
+<h2 id="http">http</h2>
+<p>http请求报文包含请求行 首部行 空行 实体主体</p>
+<ul>
+<li>请求行（方法+url+http版本）</li>
+<li>首部行</li>
+<li>host：url所在的主机</li>
+<li>connection：是否在连接后关闭</li>
+<li>实体主体</li>
+</ul>
+<p><strong>put和post的区别</strong>：</p>
+<p>使用两者取决于Restful服务时是否幂等，如果需要创建多个对象用post，需要创建单个对象用put</p>
+<ul>
+<li>
+<p>put用于上传对象到服务器，是幂等操作，对一个uri传输一个对象，具体是创建还是更新（覆盖已有的对象）由返回状态码表示。</p>
+</li>
+<li>
+<p>post用于上传对象的时候，不是幂等操作，会产生额外的对象那个</p>
+</li>
+</ul>
+<p><strong>HTTP/1.0 与 HTTP/1.1</strong></p>
+<ul>
+<li>默认长连接</li>
+<li>支持同时打开多个tcp连接</li>
+<li>增加100状态码</li>
+<li>支持管线化处理</li>
+<li>支持虚拟主机（可以使一台主机拥有多个域名，逻辑上可以看做多个服务器）</li>
+<li>支持分块传输编码</li>
+</ul>
+<p><strong>https</strong>:</p>
+<p>采用隧道进行通信，http先和ssl通信，ssl再和tcp通信</p>
+<ul>
+<li>http的安全性问题：</li>
+<li>使用明文，可能被窃听</li>
+<li>没有身份认证，通信方的身份可能遭遇伪装</li>
+<li>报文可能被篡改</li>
+<li>校验ca证书：</li>
+<li>
+<p>ca证书中包括公钥和hash算法，通过公钥对私钥加密的hash值进行解密，再对该值通过hash算法生成新的hash值，与原hash值比较，相等则通过验证</p>
+</li>
+<li>
+<p>https通过认证仿伪装，通过加密防窃听和防篡改</p>
+</li>
+<li>加密采用对称加密和非对称加密<ul>
+<li>https采用对称加密和非对称加密混合的方式进行加密，</li>
+<li>通过非对称加密产生三个随机数和ca证书校验，得到对话密钥<ul>
+<li>客户端首先产生一个随机数1，并将自己支持的ssl版本号和加密算法告诉服务器</li>
+<li>服务器确认双方的加密算法，并生成随机数2，把ca证书和随机数2 一同返回给客户端</li>
+<li>客户端对ca证书进行校验，通过后产生随机数3，并用公钥对随机数3进行加密，发送给服务端</li>
+<li>服务端对随机数3 进行解密，得到真正的随机数3.客户端和服务端利用这三个随机数生成对话密钥，之后就利用对话密钥进行加解密，采用的加密算法是对称加密AES。</li>
+</ul>
+</li>
+<li>之后采用对称加密AES算法进行通信</li>
+</ul>
+</li>
+<li>认证采用证书的方式</li>
+</ul>
+<h2 id="_2">网络</h2>
+<p>子网掩码：子网掩码是32位二进制值，它屏蔽掉IP地址中的一部分，可以分离处网络地址和主机地址 ip地址的前三个字节，末位为0.利用子网掩码可以分离出主机地址（子网掩码取反后与ip与运算）和网络地址（子网掩码与ip与运算）</p>
+<p>要使用子网，必须配置子网掩码。一个 B 类地址的默认子网掩码为 255.255.0.0，如果 B 类地址的子网占两个比特，那么子网掩码为 11111111 11111111 11000000 00000000，也就是 255.255.192.0。</p>
+<p>上面的子网共有2^2=4-2 = 2个 ，即01 和 10</p>
+<p>缺省子网掩码：</p>
+<ul>
+<li>A类：255.0.0.0</li>
+<li>B类：255.255.0.0</li>
+<li>C类：255.255.255.0</li>
+</ul>
+<p>ip地址编址方式：</p>
+<ul>
+<li>分类ABCD</li>
+<li>子网划分</li>
+</ul>
+<h2 id="_3">计算机网络体系结构</h2>
+<p><img alt="img" src="https://github.com/CyC2018/CS-Notes/raw/master/pics/426df589-6f97-4622-b74d-4a81fcb1da8e.png" /></p>
+<p><img alt="img" src="https://github.com/CyC2018/CS-Notes/raw/master/pics/d4eef1e2-5703-4ca4-82ab-8dda93d6b81f.png" /></p>
+<h2 id="ping">ping</h2>
+<p>ping是ICMP的一个重要应用，主要用来测试两台主机间的连通性。</p>
+<p>ping的原理是通过向目标主机发送echo请求报文，目的主机收到报文后发送echo回答报文。</p>
+<h2 id="tcpudp">TCP与UDP</h2>
+<p>UDP首部字段只有8个字节 ：源端口、目的端口、长度、checksum</p>
+<p>TCP首部字段有32个字节：源端口 目的端口、序号（发送时） 确认号（接受时） 确认ack 同步syn 终止fin 窗口</p>
+<p>tcp三次握手：</p>
+<ul>
+<li>发送方发出SYN  seq =x  从closed状态进入SYN_SENT状态 </li>
+<li>接收方收到发送方报文 发出 ACK和SYN seq=y ack=x+1 由listen状态进入SYN_RCVD状态</li>
+<li>发送方收到 发出ACK seq = x+1 ack=y+1，并进入established状态</li>
+<li>接收方收到后，进入established状态</li>
+</ul>
+<p>第三次握手的原因是为了防止客户端的滞留请求多次发送到服务器，导致打开多个连接</p>
+<p>tcp四次挥手：</p>
+<blockquote>
+<p>https://app.getpocket.com/read/2930773017</p>
+<ul>
+<li>time_wait状态会持续2MSL时长，一是为了防止接受方未收到ack，重发fin报文；二是因为报文有效期为2MSL，避免重启发送方后收到之前的报文。</li>
+<li><strong>LAST_ACK</strong>会自动消失。</li>
+<li>close_wait会占用接受方的文件描述符，当接受方出现大量close_wait状态的连接时，将无法建立新连接。（接收方需要监听发送方连接套接字的EPOLLRDHUP事件，并close文件描述符）</li>
+</ul>
+</blockquote>
+<p><img alt="img" src="https://pocket-image-cache.com//filters:no_upscale()/https%3A%2F%2Fpic4.zhimg.com%2Fv2-cca52ad65861f73fc6dbb5a80bf09fd3_r.jpg" /></p>
+<ul>
+<li>发送方发送fin 进入<strong>FIN_WAIT1</strong>状态</li>
+<li>接收方发送ack ，并从<strong>established</strong>状态进入<strong>close_wait</strong>状态</li>
+<li>发送方收到ack进入<strong>FIN_WAIT2</strong>状态</li>
+<li>接收方发送fin报文，进入<strong>LAST_ACK</strong>状态(接受方主动调用close方法)</li>
+<li>发送方发出ack报文，并进入time_wait状态（持续2MSL）。（若服务器没有收到ack，会重发fin报文；收到则进入closed状态）</li>
+</ul>
+<p>tcp通过超时重传进行可靠传输，通过滑动窗口实现流量控制</p>
+<p>tcp拥塞控制：慢开始、拥塞避免、快重传、快恢复</p>
+<p><strong>TCP和UDP的区别：</strong></p>
+<p><strong>DNS</strong>：</p>
+<h1 id="_4">博客</h1>
+<p>https://news.ycombinator.com/item?id=22273224</p>
+<p>https://eli.thegreenplace.net/</p>
+<p>jvm系列文章 https://shipilev.net/jvm/anatomy-quarks/</p>
+<p>搜索引擎 https://www.iaria.org/conferences2018/filesDBKDA18/AndreasSchmidt_Tutorial_SearchEngine.pdf</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../about/" class="btn btn-neutral float-right" title="About">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../interview-os-linux/" class="btn btn-neutral" title="Linux"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../interview-os-linux/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../about/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

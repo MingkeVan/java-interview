@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>操作系统 - JavaInterview</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "\u64cd\u4f5c\u7cfb\u7edf";
+    var mkdocs_page_input_path = "interview-os.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> JavaInterview</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-java-basic/">Java基础</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-java-spring/">Spring</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-sql/">Mysql</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-redis/">Redis</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">操作系统</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#io">IO模型</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">同步、异步 阻塞、非阻塞：</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">操作系统</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_4">死锁</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-os-linux/">Linux</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-network/">计算机网络</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">JavaInterview</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>操作系统</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="_1">操作系统</h1>
+<h2 id="io">IO模型</h2>
+<ul>
+<li>同步阻塞IO。</li>
+</ul>
+<p>1、线程阻塞在等待数据 和 数据拷贝回用户态上</p>
+<p><img alt="img" src="https://pic3.zhimg.com/80/e83d68da03da2e8c1568b4b4b630edfd_hd.jpg" /></p>
+<ul>
+<li>同步非阻塞IO。1、线程发出系统调用，若操作系统没准备好久返回错误码，线程会不断重试 知道数据准备好，并主动将数据拷贝回用户空间。<strong>注意系统调用是立即返回的，属于非阻塞。但对于进程来说，阻塞在了拷贝数据这一块，，无法立即返回数据，所以是同步的</strong>。</li>
+</ul>
+<p><img alt="img" src="https://pic1.zhimg.com/80/4bc31cab27a9a732ab7d1ba9e674ed64_hd.jpg" /></p>
+<ul>
+<li>同步IO多路复用 select poll epoll。</li>
+</ul>
+<p>1、<strong>IO多路复用是阻塞的</strong>，主要阻塞在select poll epoll这种系统调用上，而不是阻塞在recvfrom上,因为发出recv系统调用时，数据处在准备好的状态</p>
+<p>2、recvfrom系统调用发出后，进程则阻塞在数据拷贝上。</p>
+<p><img alt="img" src="https://pic1.zhimg.com/80/b1ec6a4f16844a27c175d5a6a94cd7f8_hd.jpg" /></p>
+<ul>
+<li>
+<p>同步信号驱动式IO</p>
+</li>
+<li>
+<p>异步IO。</p>
+</li>
+</ul>
+<p>1、发起aio_read的系统调用，直接返回，告诉操作系统准备好数据并通知自己；</p>
+<p>2、数据准备好后，应用去处理数据。<strong>拷贝数据是由操作系统自己完成的。</strong></p>
+<p>怎样理解阻塞非阻塞与同步异步的区别？ - 大姚的回答 - 知乎 https://www.zhihu.com/question/19732473/answer/26101328</p>
+<ul>
+<li>IO操作分为两步 系统调用和真正的IO操作（读写数据）</li>
+<li>同步IO操作需要主动读写数据，都会阻塞于真正的IO操作（recvfrom）</li>
+<li>异步操作只需要IO操作完成的通知，并不主动读写数据</li>
+</ul>
+<h2 id="_2">同步、异步 阻塞、非阻塞：</h2>
+<ul>
+<li>
+<p>https://www.zhihu.com/question/19732473</p>
+</li>
+<li>
+<p>IO都是同步IO，不管是select poll 还是epoll，因为调用会后无法立即得到结果，只有将内核空间的数据复制到用户空间后线程才能返回，期间线程处于挂起状态。只不过epoll的通知方式不同。</p>
+</li>
+<li>
+<p>只有使用了特殊的API才是异步IO</p>
+</li>
+</ul>
+<p><img alt="img" src="https://pic3.zhimg.com/80/7d3eb389b7724878bd7e12ebc6dbcdb5_hd.jpg" /></p>
+<ul>
+<li>
+<p>异步和同步的区别是调用的时候进程或线程是否挂起，并不是通知方式不同。感觉通知方式只是为了实现这一功能的方法，是结果，不是原因。</p>
+</li>
+<li>
+<p>阻塞和非阻塞的区别是调用后是否立即返回，在复制数据到用户态的阶段它们都是阻塞的，所以不管阻塞非阻塞，只要读写数据的两个环节中有阻塞的，那么就是同步的，即便是IO复用，也是同步的…具体解释建议看一下《unix网络编程》第三版的第六章前半部分</p>
+</li>
+<li>
+<p>同步阻塞 同步非阻塞 异步非阻塞（不存在异步阻塞，阻塞肯定是同步的）</p>
+</li>
+</ul>
+<h2 id="_3">操作系统</h2>
+<p>进程间的通信方式：</p>
+<ul>
+<li>管道及命名管道</li>
+<li>信号</li>
+<li>消息队列</li>
+<li>共享内存</li>
+<li>信号量</li>
+<li>套接字</li>
+</ul>
+<p>线程同步的方式：</p>
+<p>互斥量（互斥对象机制，只有拥有互斥对象的线程才有获得公共资源的权限，保证公共资源不会被多个线程访问）、信号量（控制同一时刻访问资源的线程最大数量）、事件（信号）</p>
+<p>进程调度策略：</p>
+<p>先来先服务、短执行进程优先、最高优先级优先、</p>
+<p>基于进程的静态优先级进行调度（静态优先级一旦确定始终不变、调度性能不高）</p>
+<p>动态优先级的调度策略。动态优先级由进程战友CPU的时间长短和就绪进程等待CPU的时间长短来决定。系统开销稍大。</p>
+<p>时间片轮转法。进程在就绪队列中的等待时间和享受服务的时间成比例。</p>
+<p>页面置换算法：</p>
+<p>最优置换算法、</p>
+<p>FIFO先进先出算法。该算法只有在按线性顺序访问地址空间才是理想的。</p>
+<p>LRU（最近最久未使用）、</p>
+<p>LFT（最少使用次数）</p>
+<h2 id="_4">死锁</h2>
+<p>四个条件：</p>
+<ul>
+<li>互斥</li>
+<li>请求与保持：一个线程因请求资源而阻塞时，对已获得的资源保持不放</li>
+<li>不可剥夺</li>
+<li>循环等待</li>
+</ul>
+<p>死锁的处理策略：鸵鸟策略、预防策略、避免策略、检测与恢复策略</p>
+<ul>
+<li>
+<p>死锁预防：从源头预防，性能较低</p>
+</li>
+<li>
+<p>对于请求和保持条件，破坏它可以通过 每个进程执行前请求所有资源</p>
+</li>
+<li>
+<p>对于循环等待条件，破坏它可以通过给资源编号，进程只能按编号顺序请求资源。</p>
+</li>
+<li>
+<p>死锁避免：比死锁预防允许更多的并发，允许前三个必要条件</p>
+</li>
+<li>
+<p>进程启动拒绝：如果一个进程的启动会导致加锁，则不启动</p>
+<ul>
+<li>安全状态的检测 类似死锁检测，若存在某种调度次序满足所有进程对资源的需求，则状态安全</li>
+</ul>
+</li>
+<li>
+<p>资源分配拒绝：如果一个进程的资源请求会导致死锁，则不允许分配，此为银行家算法</p>
+<p>银行家算法允许进程动态地申请资源，系统在每次实施资源分配之前，先计算资源分配的安全性，若此次资源分配安全（通过安全性算法检测），便进行此次分配</p>
+<ul>
+<li>单个资源的银行家算法</li>
+<li>检测请求是否会导致不安全状态</li>
+<li>多个资源的银行家算法</li>
+<li>类似于多个资源的死锁检测</li>
+</ul>
+</li>
+<li>
+<p>死锁检测：允许死锁发生，可通过手段检测死锁位置</p>
+</li>
+<li>
+<p>每种类型一个资源的死锁检测：检测链表环路</p>
+</li>
+<li>
+<p>每种类型多个资源的死锁检测：</p>
+<ul>
+<li>每个进程开始不被标记</li>
+<li>每次寻找一个未被标记的进程，且该进程请求的资源数量小于资源总量；返回1</li>
+<li>若找不到，算法终止！</li>
+</ul>
+</li>
+<li>
+<p>死锁清除：与死锁检测配合使用，清除死锁</p>
+</li>
+<li>
+<p>死锁检测和清除实现难度最大，但资源利用率和吞吐量较好</p>
+</li>
+<li>常用的死锁解除方法：<ul>
+<li>剥夺资源</li>
+<li>撤销进程</li>
+</ul>
+</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../interview-os-linux/" class="btn btn-neutral float-right" title="Linux">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../interview-redis/" class="btn btn-neutral" title="Redis"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../interview-redis/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../interview-os-linux/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Redis - JavaInterview</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Redis";
+    var mkdocs_page_input_path = "interview-redis.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> JavaInterview</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-java-basic/">Java基础</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-java-spring/">Spring</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-sql/">Mysql</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Redis</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_1">资料</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#redis-memcached">redis 和 memcached的区别</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#redis_1">Redis内存回收</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#redis_2">redis事务</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#redis_3">redis分布式锁：</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">分布式锁的四个条件：</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#redis_4">单点redis锁实现：</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#redlock">redlock分布式锁实现步骤</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#lua">Lua脚本优点</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#redisscankeys">Redis的Scan命令与keys命令</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#redis_5">redis 集群</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#selectpollepoll">select、poll或epoll</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#redis-sorted-set">Redis Sorted set</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#redis-aof">Redis AOF重写</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-os/">操作系统</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-os-linux/">Linux</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-network/">计算机网络</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">JavaInterview</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Redis</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="redis">Redis</h1>
+<h2 id="_1">资料</h2>
+<p>掘金小册：https://juejin.im/book/5afc2e5f6fb9a07a9b362527</p>
+<p>java redis实现：https://github.com/redisson/redisson</p>
+<p>redis面试问题集锦 https://zhuanlan.zhihu.com/p/41951014</p>
+<h2 id="redis-memcached">redis 和 memcached的区别</h2>
+<ul>
+<li>redis 不仅支持简单的key-value数据类型，还提供list set hash string zset等数据结构</li>
+<li>redis支持数据的持久化，memcached不支持</li>
+<li>redis是单线程 memcached是多线程</li>
+<li>数据一致性：memcached提供cas保证多线程并发时的数据一致性，redis通过事务确保一串命令的原子性</li>
+</ul>
+<h2 id="redis_1">Redis内存回收</h2>
+<p>过期键删除策略：</p>
+<ul>
+<li>被动删除（惰性删除）、</li>
+<li>主动删除（定期主动淘汰）：内部维护定时任务，每秒运行10次，删除过期键逻辑采用自适应算法，根据键的过期比例设置快慢两种速率回收键，并在键过期概率不超过25% 时，停止算法</li>
+<li>内存超过maxmemory限定主动清理，主动清理策略：</li>
+<li>volatile-lru：只对设置了过期时间的key进行LRU</li>
+<li>allkeys-lru:根据LRU算法删除所有key</li>
+<li>volatile-random：随机删除即将过期key</li>
+<li>allkeys-random：随机删除所有键</li>
+<li>volatile-ttl：删除即将过期的</li>
+<li>noeviction：永不过期，不会删除任何数据，拒绝所有写入操作并返回客户端错误信息，此时只响应读操作</li>
+</ul>
+<h2 id="redis_2">redis事务</h2>
+<p>Redis事务如何处理？怎么保证事物之间不受影响</p>
+<ul>
+<li>Redis事务的分析及改进 https://segmentfault.com/a/1190000002594059</li>
+<li>只保证一致性和隔离性 不保证原子性和持久性</li>
+<li>原子性：redis事务执行遇到错误不会回滚，而是继续执行后续命令；</li>
+<li>持久性：redis使用的持久化模式有三种：内存模式、RDB模式、AOF模式。</li>
+<li>RDB模式下，服务器在事务执行之后、RDB文件更新之前的这段时间失败，所以RDB模式下的Redis事务也是不持久的。</li>
+<li>AOF模式下，服务器在命令执行成功和数据保存到硬盘之间，也是有时间间隔的</li>
+</ul>
+<p>Redis事务与MySql的区别</p>
+<ul>
+<li>MySQL实现事务，是基于<code>UNDO/REDO日志</code>。通过begin rollback commit。默认每个sql都是一个事务，并自动commit。</li>
+<li>redis是基于commands队列。默认不开启。通过watch监控key 通过multi开启事务 exec执行 discard取消</li>
+</ul>
+<h2 id="redis_3">redis分布式锁：</h2>
+<h3 id="_2">分布式锁的四个条件：</h3>
+<ul>
+<li>互斥性。在任意时刻，只要一个客户端能获得锁。</li>
+<li>不会发生死锁。及时有一个客户端获取锁之后没有主动解锁，也不会影响后续其他客户端获取锁。通过set原子指令保证原子性</li>
+<li>性能。</li>
+<li>可重入。也叫递归锁，同一个线程可以重复获得同一个资源的锁</li>
+</ul>
+<p>分布式锁实现参考：</p>
+<ul>
+<li>http://blueskykong.com/2018/01/06/redislock/#more</li>
+<li>
+<p>https://www.cnblogs.com/number7/p/8320259.html java redission锁实现</p>
+</li>
+<li>
+<p>https://mp.weixin.qq.com/s/gOYWLg3xYt4OhS46woN_Lg</p>
+</li>
+<li>lua脚本保证释放锁时的原子性</li>
+<li>redlock算法</li>
+<li>官方文档关于锁的标准实现：http://redis.cn/topics/distlock.html</li>
+<li>http://zhangtielei.com/posts/blog-redlock-reasoning.html</li>
+</ul>
+<h3 id="redis_4">单点redis锁实现：</h3>
+<ol>
+<li>通过setnx原子指令进行加锁，随机值在所有客户端必须是唯一的，</li>
+</ol>
+<p><code>lua
+   SET resource_name my_random_value NX PX 30000</code></p>
+<ol>
+<li>释放锁时检查随机值，然后进行删除操作，这两步需要通过lua脚本保证原子性</li>
+</ol>
+<p><code>lua
+   if redis.call("get",KEYS[1]) == ARGV[1] then
+       return redis.call("del",KEYS[1])
+   else
+       return 0
+   end</code></p>
+<p><strong><em>关键点：随机值和lua脚本。</em></strong></p>
+<ul>
+<li>
+<p>随机值是为了避免删除其他客户端获取成功的锁。如果value是一个定值，则如果客户端A获取到锁之后因为某种原因阻塞；锁超时后被另一个客户端B获得；如果此时客户端A进行释放锁操作，那就会将B的锁删除</p>
+</li>
+<li>
+<p>lua脚本也是为了避免删除其他客户端获取成功的锁。如果释放锁操作不是原子性，则如果客户端A执行get请求，并判断随机数与预期值相等后，因为某种原因阻塞了；锁超时后被另一个客户端B获得；如果此时客户端A进行释放锁操作，那就会将B的锁删除</p>
+</li>
+</ul>
+<h3 id="redlock">redlock分布式锁实现步骤</h3>
+<p>。。。</p>
+<h2 id="lua">Lua脚本优点</h2>
+<ul>
+<li>减少网路开销</li>
+<li>原子操作</li>
+<li>复用</li>
+</ul>
+<h2 id="redisscankeys">Redis的Scan命令与keys命令</h2>
+<p>scan是非阻塞的是扫描命令，需要手动去重，而keys会导致线上服务停顿 </p>
+<h2 id="redis_5">redis 集群</h2>
+<p><strong>主从模式</strong>、<strong>哨兵模式</strong>、<strong>集群模式</strong>。</p>
+<p>redi    s sentinal着眼于高可用，在master宕机时，会将slave提升为master</p>
+<p>redis cluster 着眼于扩展性，在单个redis内存不足时，使用cluster进行分片存储</p>
+<p>Redis的哨兵机制</p>
+<p>Redis的发布订阅机制</p>
+<h2 id="selectpollepoll">select、poll或epoll</h2>
+<ul>
+<li>每次调用select都会将所有的文件描述符（fd_set）从用户空间拷贝到内核空间 操作系统进行遍历</li>
+<li>缺点1：有数量限制</li>
+<li>缺点2：拷进拷出</li>
+<li>缺点3：操作系统需要全局扫描哪些文件描述符是就绪（读就绪或者写就绪）的 如果有连接 拷贝回用户态 用户态进行全局扫描 </li>
+<li>poll没有数量限制</li>
+<li>epoll ：在内核中维护一个存储文件描述符的红黑树 用户将文件描述符拷贝到红黑树中，红黑树中的节点使用callback表示文件描述符可用，并拷贝节点信息到链表中，内核将该包含所有可用文件描述符的链表拷贝回用户态，用户只需要遍历这个链表即可。</li>
+<li>优点1：不用拷进拷出。epoll_create创建一个epoll句柄，epoll_ctl注册新的事件到epoll句柄中，会把所有的fd拷贝进内核，而且保证只拷贝一次，并指定回调函数。 epoll_ctl函数注册要监听的事件类型</li>
+<li>优点2：不用全局扫描。设备就绪时会调用回调函数，把就绪fd放入就绪链表中，并唤醒在epoll_wait中进入睡眠的进程。epoll_wait只需要在被唤醒时，查看就虚链表是否为空即可。</li>
+<li>应用场景：select适合实时要求高的场景 timeout参数精度为1ns，poll适用于描述符数量较多，且实时要求不高的场景，epoll只能用于linux ，且适用于长连接，描述符数量大、变化少的场景</li>
+</ul>
+<h2 id="redis-sorted-set">Redis Sorted set</h2>
+<ul>
+<li>zadd key score value：key是有序集合的名字 score用于排序 value是存储的member，不允许重复</li>
+<li>底层实现：当items小于64时 采用ziplist实现；大于64改为skiplist和字典同时实现</li>
+<li>字典和跳跃表共享对象</li>
+</ul>
+<p>redis有五种数据类型，若干种编码方式</p>
+<h2 id="redis-aof">Redis AOF重写</h2>
+<ul>
+<li>通过追加log的方式，完成对数据库的备份</li>
+<li>AOF重写启动方式：1、用户手动执行BGREWRITEAOF命令去重写；2、增长百分比为100%的时候启动重写（需满足三个条件：1、BGSAVE不在执行； 2、BGREWRITEAOF没在执行； 3、 AOF文件大小超出1MB（太小没有必要重写））</li>
+<li>AOF重写实现：</li>
+<li>因为AOF的目的是保存数据库的状态，重复操作的比如插入修改等指令并不是关键，AOF重写只需要读取数据库的当前状态，比如执行zadd 有序集合中现存的所有成员</li>
+<li>一句话总结：根据键的类型， 使用适当的写入命令来重现键的当前值， 这就是 AOF 重写的实现原理 </li>
+<li>AOF重写过程：</li>
+<li>主进程fork子进程进行重写，重写过程中的写入指令 一方面追加到现有AOF文件中；一方面添加到AOF重写缓存（重写完成后启用）</li>
+<li>重写完成后，子进程发送给主进程完成信号，主进程将AOF重写缓存中的指令追加到新的AOF文件中</li>
+<li>新AOF文件改名并覆盖现有AOF文件</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../interview-os/" class="btn btn-neutral float-right" title="操作系统">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../interview-sql/" class="btn btn-neutral" title="Mysql"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../interview-sql/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../interview-os/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
