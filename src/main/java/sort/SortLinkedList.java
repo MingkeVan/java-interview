@@ -5,6 +5,7 @@ package sort;
  * @decription https://leetcode-cn.com/problems/sort-list/comments/
  * @date 2020/2/29 15:39
  *
+ * 链表归并排序
  */
 public class SortLinkedList {
 
@@ -29,7 +30,7 @@ public class SortLinkedList {
     }
 
     /**
-     * 合并两个链表
+     * 合并两个有序链表
      *
      * @param l1
      * @param l2
