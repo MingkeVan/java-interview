@@ -9,3 +9,7 @@ https://mingkevan.github.io/java-interview/
 * https://sulangsss.github.io/page/17/
 * http://jm.taobao.org/2018/06/26/%E8%81%8A%E8%81%8A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%9A%84%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0/
 * https://crossoverjie.top/2018/08/27/distributed/distributed-discovery-zk/
+
+## 待整理内容
+
+服务注册发现之zookeeper https://crossoverjie.top/2018/08/27/distributed/distributed-discovery-zk/
