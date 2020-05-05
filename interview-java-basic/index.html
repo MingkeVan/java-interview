@@ -54,8 +54,6 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#final">final的好处</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#volatile">volatile</a>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#_1">基本数据类型和封装类的区别</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#_2">抽象类和接口的区别</a>
@@ -199,7 +197,8 @@
 </ul>
 <p><strong>java this逃逸问题</strong></p>
 <p>this逃逸是指在构造函数完成之前，其他线程就持有该对象的引用。</p>
-<pre><code class="java">public class FinalReferenceEscapeDemo {
+<pre><code class="java">
+public class FinalReferenceEscapeDemo {
     private final int a;
     private FinalReferenceEscapeDemo referenceDemo;
 
@@ -218,10 +217,10 @@
         }
     }
 }
+
 </code></pre>
 
 <p>通常出现在在构造函数中启动线程或注册监听器。</p>
-<h3 id="volatile">volatile</h3>
 <h3 id="_1">基本数据类型和封装类的区别</h3>
 <ul>
 <li>int是基本数据类型，仅仅代表数的范围；integer是int的封装类，包含很多与数据有关的方法</li>
