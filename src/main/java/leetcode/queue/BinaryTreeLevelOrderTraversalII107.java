@@ -63,7 +63,7 @@ public class BinaryTreeLevelOrderTraversalII107 {
         new BinaryTreeLevelOrderTraversalII107().levelOrderBottom(treeNode);
     }
 
-    public static class TreeNode {
+    static class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;
