@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>微服务 - JavaInterview</title>
+  <title>微服务之服务注册与发现 - JavaInterview</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../css/theme.css" />
@@ -18,7 +18,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "\u5fae\u670d\u52a1";
+    var mkdocs_page_name = "\u5fae\u670d\u52a1\u4e4b\u670d\u52a1\u6ce8\u518c\u4e0e\u53d1\u73b0";
     var mkdocs_page_input_path = "interview-microservice.md";
     var mkdocs_page_url = null;
   </script>
@@ -64,6 +64,14 @@
                     </li>
                 </ul>
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-kafka/">Kafka</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-zookeeper/">Zookeeper</a>
+                    </li>
+                </ul>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../interview-os/">操作系统</a>
                     </li>
                 </ul>
@@ -73,6 +81,56 @@
                 </ul>
                 <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../interview-network/">计算机网络</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">微服务之服务注册与发现</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_2">服务注册与发现基础</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_3">服务注册流程</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_4">服务健康</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_5">服务下线</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_6">自动重发机制</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#zookeeper">zookeeper负载均衡的实现思路</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#zookeeper_1">zookeeper服务注册与发现的缺点</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_7">服务注册与发现进阶</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#ip">如何确定注册的IP和端口？</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_8">为了更好的实现服务治理，注册的信息需要包含哪些？</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_9">如何优雅的实现服务注册和服务下线？</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_10">如何进行注册服务的健康检查？</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_11">如何方便的查看某个应用发布和订阅了哪些服务，以及所订阅的服务有哪些节点？</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_12">服务注册与发现的技术选型</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-distributed-systems/">分布式系统</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-design-patterns/">设计模式</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../others/">其他</a>
                     </li>
                 </ul>
                 <ul>
@@ -100,7 +158,7 @@
     
       
     
-    <li>微服务</li>
+    <li>微服务之服务注册与发现</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -193,6 +251,15 @@
           </div>
           <footer>
   
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../interview-distributed-systems/" class="btn btn-neutral float-right" title="分布式系统">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../interview-network/" class="btn btn-neutral" title="计算机网络"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
 
   <hr/>
 
@@ -215,6 +282,10 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
+        <span><a href="../interview-network/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../interview-distributed-systems/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
