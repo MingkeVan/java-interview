@@ -106,3 +106,7 @@ ps：zookeeper服务注册与发现是通过利用临时节点的特性来实现
 不可用，则在剩余其他服务中随机挑选一个健康的；
 
 若都不健康，则随机挑选一个。
+
+## 参考
+
+* https://crossoverjie.top/2018/08/27/distributed/distributed-discovery-zk/
