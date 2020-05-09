@@ -5,8 +5,16 @@ nav:
     - Spring: interview-java-spring.md
     - Mysql: interview-sql.md
     - Redis: interview-redis.md
+    - Kafka: interview-kafka.md
+    - Zookeeper: interview-zookeeper.md
     - 操作系统: interview-os.md
     - Linux: interview-os-linux.md
     - 计算机网络: interview-network.md
+#    - 微服务: interview-microservice.md
+    - 微服务之服务注册与发现: interview-microservice.md
+    - 分布式系统: interview-distributed-systems.md
+    - 设计模式: interview-design-patterns.md
+    - 其他: others.md
+
     - About: about.md
 theme: readthedocs
