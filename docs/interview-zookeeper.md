@@ -2,6 +2,13 @@
 
 ## zookeeper的重要概念
 
+### Zookeeper节点类型
+
+* 持久节点
+* 持久顺序节点
+* 临时节点
+* 临时顺序节点
+
 ### Zookeeper集群
 
 Zookeeper 是一个由多个 server 组成的集群,一个 leader，多个 follower。（这个不同于我们常见的Master/Slave模式）
@@ -13,6 +20,10 @@ leader 为客户端服务器提供**读写服务**，除了leader外其他的机
 原子性，一次数据更新要么成功，要么失败。
 
 全局唯一数据视图，client 无论连接到哪个 server，数据视图都是一致的实时性，在一定事件范围内，client 能读到最新数据。
+
+### 心跳机制
+
+Leader和Follower之间通过**PING**来感知对方的存活，一旦与leader的心跳中断，就需要重新进行leader选举。
 
 ### 集群角色
 
@@ -91,3 +102,5 @@ https://blog.csdn.net/hosaos/article/details/88658676
 ## 参考
 
 * https://juejin.im/post/5baf7db75188255c3d11622e
+* [Zookeeper源码分析-Zookeeper Leader选举算法](http://www.yidooo.net/2014/10/18/zookeeper-leader-election.html)
+* [Zookeeper源码分析](http://www.yidooo.net/categories/Big-Data/ZooKeeper/)
