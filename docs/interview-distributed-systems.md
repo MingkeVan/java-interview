@@ -100,9 +100,26 @@ todo
 * 定期校对模式
 * 可靠消息模式
 
+## 分布式事务
+
+## 分布式缓存
+
+### 缓存模式
+
+> [缓存模式以及缓存的数据一致性](https://stephanietang.github.io/2020/04/13/cache-pattern/)
+>
+> [缓存更新的套路](https://coolshell.cn/articles/17416.html)
+
+* Cache-Aside
+* Read-Through/Write-Through
+
+## 分布式存储
+
+## 分布式计算
+
 ## 参考
 
 * [分布式服务化系统一致性的“最佳实干”](https://www.jianshu.com/p/1156151e20c8)
 * [分布式系统 - CAP定理](http://www.yidooo.net/2019/02/28/cap-theorem.html)
 * [分布式系统 - BASE理论](http://www.yidooo.net/2019/04/21/base-theorem.html)
-
+* [缓存更新的套路](https://coolshell.cn/articles/17416.html)
