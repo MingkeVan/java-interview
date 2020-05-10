@@ -16,15 +16,9 @@ https://mingkevan.github.io/java-interview/
 
 - [x] 服务注册与发现
 - [x] zookeeper基础和原理
-- [] API鉴权
-- [] RPC框架
+- [ ] API鉴权
+- [ ] RPC框架
 
-* API鉴权
-    * https://coolshell.cn/articles/19395.html
-    * http://blueskykong.com/2017/10/19/security1/
-* RPC框架
-    * https://www.cnkirito.moe/categories/RPC/
-    * https://www.iteye.com/blog/javatar-1123915
     
 ## markdown 格式
 https://guides.github.com/features/mastering-markdown/
