@@ -90,15 +90,59 @@
                 <ul class="current">
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">分布式系统</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#acid">ACID</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cap">CAP定理</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#cap_1">CAP定理简介</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ca">满足CA的例子</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ap">满足AP的例子</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cp">满足CP的例子</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#base">BASE理论</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#basically-available">基本可用（Basically Available）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#soft-state">软状态（Soft State）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#eventually-consistent">最终一致性（Eventually Consistent）</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#causal-consistency">因果一致性（Causal consistency）</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#read-your-writes">读己之所写（Read your writes）</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#session-consistency">会话一致性（Session consistency）</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#monotonic-read-consistency">单调读一致性（Monotonic read consistency）</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#monotonic-write-consistency">单调写一致性（Monotonic write consistency）</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#basecapacid">BASE、CAP和ACID区别</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#paxoszabraft">分布式一致性协议之paxos、zab、raft</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#paxos">paxos</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#zab">ZAB</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#raft">RAFT</a>
+    </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#capbase">cap和base理论</a>
+    <li class="toctree-l2"><a class="reference internal" href="#hash">一致性hash</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_2">参考</a>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">最佳实践</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">参考</a>
     </li>
     </ul>
                     </li>
@@ -149,18 +193,69 @@
               
                 <h1 id="_1">分布式系统</h1>
 <p>https://aws.amazon.com/cn/builders-library/?cards-body.sort-by=item.additionalFields.customSort&amp;cards-body.sort-order=asc 亚马逊官方博客</p>
+<h2 id="acid">ACID</h2>
+<p>具有ACID特性的数据库，如关系型数据库（Oracle、MySQL），支持强一致性，通过多版本并发控制协议（MVCC）实现</p>
+<h2 id="cap">CAP定理</h2>
+<h3 id="cap_1">CAP定理简介</h3>
+<p>CAP定理指的是在分布式系统中，一致性、可用性、分区容错性最多只能同时满足其中的两个。</p>
+<h3 id="ca">满足CA的例子</h3>
+<p>如果不要求P（不允许分区），则C（强一致性）和A（可用性）是可以保证的。但其实分区不是你想不想的问题，而是始终会存在，因此CA的系统更多的是允许分区后各子系统依然保持CA。例子如银行转账等场景，一旦分区发生故障，则直接拒绝提供服务。</p>
+<h3 id="ap">满足AP的例子</h3>
+<p>为了达到高可用和分区容错性，则一旦分区发生，则节点之间可能会失去联系，为了保证高可用，每个节点只能用本地数据提供服务，这样则可能导致不同节点的数据不一致。例子如eureka。</p>
+<h3 id="cp">满足CP的例子</h3>
+<p>为了达到一致性和分区容错性。则在分区发生的时候，势必要在不同节点之间保证强一致性，不同节点间的数据同步就会影响集群整体的可用性。例子有Zookeeper。当进行leader选举时，整个集群是不可用的。</p>
+<h2 id="base">BASE理论</h2>
+<blockquote>
+<p>BASE理论是Basically Available(基本可用)，Soft State（软状态）和Eventually Consistent（最终一致性）三个短语的缩写，由eBay架构师Dan Pritchett提出来的。
+</p>
+</blockquote>
+<h3 id="basically-available">基本可用（Basically Available）</h3>
+<p>所谓基本可用就是在出现不可预知的故障时，系统主体功能依然可用。一个比较典型的例子就是在电商促销时，为保护购物系统，部分消费有可能会被导到一个降级页面。</p>
+<h3 id="soft-state">软状态（Soft State）</h3>
+<p>所谓软状态是指允许系统中的数据存在中间状态，并认为这种状态不影响系统的整体可用性。典型的例子如在分布式文件系统中，数据的写入往往是先写入一份，再<strong>异步</strong>生成多个副本（同步生成副本不属于这种情况）。</p>
+<h3 id="eventually-consistent">最终一致性（Eventually Consistent）</h3>
+<p>上面提到了软状态，但是系统<strong>不可以一直处于软状态，必须有一个期限</strong>。在期限过后，应当保证所有副本数据是的一致的，从而达到数据的最终一致性。而在实际工程实践中，最终一致性分为5种：</p>
+<h4 id="causal-consistency">因果一致性（Causal consistency）</h4>
+<p>如果节点A在更新完某个数据后通知了节点B，那么节点B之后对该数据的访问和修改都是基于A更新后的值。于此同时，和节点A无因果关系的节点C的数据访问则没有这样的限制。</p>
+<h4 id="read-your-writes">读己之所写（Read your writes）</h4>
+<p>节点A更新一个数据后，它自身总是能访问到自身更新过的最新值，而不会看到旧值。其实也算一种因果一致性。</p>
+<h4 id="session-consistency">会话一致性（Session consistency）</h4>
+<p>会话一致性将对系统数据的访问过程框定在了一个会话当中：系统能保证在同一个有效的会话中实现 “读己之所写” 的一致性，也就是说，执行更新操作之后，客户端能够在同一个会话中始终读取到该数据项的最新值。</p>
+<h4 id="monotonic-read-consistency">单调读一致性（Monotonic read consistency）</h4>
+<p>单调读一致性指的是：如果一个节点从系统中读取出一个数据项的某个值后，那么系统对于该节点后续的任何数据访问都不应该返回更旧的值。</p>
+<h4 id="monotonic-write-consistency">单调写一致性（Monotonic write consistency）</h4>
+<p>单调写一致性指的是：一个系统要能够保证来自同一个节点的写操作被顺序的执行。</p>
+<p>在实际的实践中，这5种系统往往会结合使用，以构建一个具有最终一致性的分布式系统。</p>
+<h2 id="basecapacid">BASE、CAP和ACID区别</h2>
+<p><strong>BASE理论</strong>是对<strong>CAP定理</strong>中一致性和可用性权衡的结果，其来源于对大规模互联网分布式系统实践的总结，是基于CAP定律逐步演化而来。</p>
+<p>和传统事务的ACID特性是相反的，它完全不同于<strong>ACID</strong>的强一致性模型，而是提出通过牺牲强一致性来获得可用性，并允许数据在一段时间内是不一致的，但最终达到一致状态。</p>
 <h2 id="paxoszabraft">分布式一致性协议之paxos、zab、raft</h2>
 <h3 id="paxos">paxos</h3>
 <blockquote>
 <p>Paxos算法是基于<strong>消息传递</strong>且具有<strong>高度容错特性</strong>的<strong>一致性算法</strong>，是目前公认的解决<strong>分布式一致性</strong>问题<strong>最有效</strong>的算法之一。</p>
 </blockquote>
+<h3 id="zab">ZAB</h3>
+<p>zab协议全称zookeeper atomic broadcast protocol，用于解决分布式情况下的一致性协议。ZAB协议是PAXOS协议的改造。</p>
+<h3 id="raft">RAFT</h3>
+<p>raft协议是paxos协议的改进，实现更简单。</p>
+<h2 id="hash">一致性hash</h2>
+<p>todo</p>
+<h2 id="_2">最佳实践</h2>
+<p>参考<a href="https://www.jianshu.com/p/1156151e20c8">分布式服务化系统一致性的“最佳实干”</a>中的若干案例，了解ACID、CAP、BASE等理论的使用场景，了解分布式场景如何通过保证最终一致性。</p>
+<p>保证最终一致性：</p>
 <ul>
-<li>zab协议全称zookeeper atomic broadcast protocol，用于解决分布式情况下的一致性协议</li>
+<li>两阶段提交、三阶段提交、TCC协议</li>
+<li>查询模式</li>
+<li>补偿模式</li>
+<li>异步确保模式</li>
+<li>定期校对模式</li>
+<li>可靠消息模式</li>
 </ul>
-<h2 id="capbase">cap和base理论</h2>
-<h2 id="_2">参考</h2>
+<h2 id="_3">参考</h2>
 <ul>
 <li><a href="https://www.jianshu.com/p/1156151e20c8">分布式服务化系统一致性的“最佳实干”</a></li>
+<li><a href="http://www.yidooo.net/2019/02/28/cap-theorem.html">分布式系统 - CAP定理</a></li>
+<li><a href="http://www.yidooo.net/2019/04/21/base-theorem.html">分布式系统 - BASE理论</a></li>
 </ul>
               
             </div>

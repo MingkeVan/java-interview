@@ -72,27 +72,31 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#zookeeper_1">zookeeper的重要概念</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#zookeeper_2">Zookeeper集群</a>
+    <li class="toctree-l3"><a class="reference internal" href="#zookeeper_2">Zookeeper节点类型</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#_1">集群角色</a>
+    <li class="toctree-l3"><a class="reference internal" href="#zookeeper_3">Zookeeper集群</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_1">心跳机制</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">集群角色</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#zookeeper_3">zookeeper的特性</a>
+    <li class="toctree-l2"><a class="reference internal" href="#zookeeper_4">zookeeper的特性</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#zookeeperleader">zookeeper的Leader选举算法</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_2">数据快照机制</a>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">数据快照机制</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_3">数据清理机制</a>
+    <li class="toctree-l2"><a class="reference internal" href="#_4">数据清理机制</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_4">会话机制</a>
+    <li class="toctree-l2"><a class="reference internal" href="#_5">会话机制</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_5">长连接机制</a>
+    <li class="toctree-l2"><a class="reference internal" href="#_6">长连接机制</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#zab">ZAB协议算法</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_6">客户端调度策略</a>
+    <li class="toctree-l2"><a class="reference internal" href="#_7">客户端调度策略</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#curator">curator源码解析</a>
         <ul>
@@ -100,7 +104,7 @@
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_7">参考</a>
+    <li class="toctree-l2"><a class="reference internal" href="#_8">参考</a>
     </li>
     </ul>
                     </li>
@@ -171,13 +175,22 @@
               
                 <h1 id="zookeeper">zookeeper服务注册与发现</h1>
 <h2 id="zookeeper_1">zookeeper的重要概念</h2>
-<h3 id="zookeeper_2">Zookeeper集群</h3>
+<h3 id="zookeeper_2">Zookeeper节点类型</h3>
+<ul>
+<li>持久节点</li>
+<li>持久顺序节点</li>
+<li>临时节点</li>
+<li>临时顺序节点</li>
+</ul>
+<h3 id="zookeeper_3">Zookeeper集群</h3>
 <p>Zookeeper 是一个由多个 server 组成的集群,一个 leader，多个 follower。（这个不同于我们常见的Master/Slave模式）</p>
 <p>leader 为客户端服务器提供<strong>读写服务</strong>，除了leader外其他的机器只能提供<strong>读服务</strong>。</p>
 <p>每个 server 保存一份数据副本全数据一致，分布式读 follower，<strong>写由 leader 实施更新请求转发，由 leader 实施更新请求顺序进行，来自同一个 client 的更新请求按其发送顺序依次执行数据更新</strong>。</p>
 <p>原子性，一次数据更新要么成功，要么失败。</p>
 <p>全局唯一数据视图，client 无论连接到哪个 server，数据视图都是一致的实时性，在一定事件范围内，client 能读到最新数据。</p>
-<h3 id="_1">集群角色</h3>
+<h3 id="_1">心跳机制</h3>
+<p>Leader和Follower之间通过<strong>PING</strong>来感知对方的存活，一旦与leader的心跳中断，就需要重新进行leader选举。</p>
+<h3 id="_2">集群角色</h3>
 <ul>
 <li>
 <p>Leader</p>
@@ -197,7 +210,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="zookeeper_3">zookeeper的特性</h2>
+<h2 id="zookeeper_4">zookeeper的特性</h2>
 <ul>
 <li>
 <p>顺序一致性，从同一个客户端发起的事务请求，最终将会严格地按照其发起顺序被应用到Zookeeper中去。</p>
@@ -241,12 +254,12 @@
 <p>超过半数即可终止投票。（zookeeper集群推荐为单数，服务器成本较低，与超过半数（n/2+1）有关）</p>
 <p>Q1: Leader挂掉后恢复，如何解决多leader的问题？</p>
 <p>A1: follower和leader间存在心跳，原leader恢复后发现其他节点与自己的心跳没了，就知道自己已经被驱逐了，然后就会调整自己为follower。</p>
-<h2 id="_2">数据快照机制</h2>
-<h2 id="_3">数据清理机制</h2>
-<h2 id="_4">会话机制</h2>
-<h2 id="_5">长连接机制</h2>
+<h2 id="_3">数据快照机制</h2>
+<h2 id="_4">数据清理机制</h2>
+<h2 id="_5">会话机制</h2>
+<h2 id="_6">长连接机制</h2>
 <h2 id="zab">ZAB协议算法</h2>
-<h2 id="_6">客户端调度策略</h2>
+<h2 id="_7">客户端调度策略</h2>
 <ul>
 <li>随机策略</li>
 <li>round robin策略（按顺序轮询）</li>
@@ -255,9 +268,11 @@
 <h3 id="watchnodecachepathchildrencachetreecache">Watch监听机制(NodeCache,PathChildrenCache,TreeCache)</h3>
 <p>https://blog.csdn.net/hosaos/article/details/88658676</p>
 <hr />
-<h2 id="_7">参考</h2>
+<h2 id="_8">参考</h2>
 <ul>
 <li>https://juejin.im/post/5baf7db75188255c3d11622e</li>
+<li><a href="http://www.yidooo.net/2014/10/18/zookeeper-leader-election.html">Zookeeper源码分析-Zookeeper Leader选举算法</a></li>
+<li><a href="http://www.yidooo.net/categories/Big-Data/ZooKeeper/">Zookeeper源码分析</a></li>
 </ul>
               
             </div>
