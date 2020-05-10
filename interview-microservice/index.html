@@ -68,7 +68,11 @@
                     </li>
                 </ul>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../interview-zookeeper/">Zookeeper</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-zookeeper-basic/">Zookeeper基础</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-zookeeper-theory/">Zookeeper原理</a>
                     </li>
                 </ul>
                 <ul>
@@ -86,7 +90,9 @@
                 <ul class="current">
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">微服务之服务注册与发现</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#_2">服务注册与发现基础</a>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">什么是服务注册与发现</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#zookeeper">基于Zookeeper实现服务注册与发现</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#_3">服务注册流程</a>
     </li>
@@ -96,9 +102,11 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#_6">自动重发机制</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#zookeeper">zookeeper负载均衡的实现思路</a>
+    <li class="toctree-l3"><a class="reference internal" href="#zookeeper_1">zookeeper负载均衡的实现思路</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#zookeeper_1">zookeeper服务注册与发现的缺点</a>
+    <li class="toctree-l3"><a class="reference internal" href="#zookeeper_2">zookeeper为什么不适合作为注册中心</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#zookeeper_3">Zookeeper服务注册与发现有那些坑？</a>
     </li>
         </ul>
     </li>
@@ -114,11 +122,19 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#_11">如何方便的查看某个应用发布和订阅了哪些服务，以及所订阅的服务有哪些节点？</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_12">服务容灾</a>
+    </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_12">服务注册与发现的技术选型</a>
+    <li class="toctree-l2"><a class="reference internal" href="#_13">服务注册发现的技术对比与选型</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#watch">watch</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_13">参考</a>
+    <li class="toctree-l3"><a class="reference internal" href="#_14">服务健康检查</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_15">参考</a>
     </li>
     </ul>
                     </li>
@@ -171,8 +187,10 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="_1">微服务</h1>
-<h2 id="_2">服务注册与发现基础</h2>
+                <h1 id="_1">微服务之服务注册与发现</h1>
+<h2 id="_2">什么是服务注册与发现</h2>
+<p><strong>服务注册发现</strong>有三个角色：<strong>服务提供者</strong>、<strong>服务消费者</strong>和<strong>服务中介</strong>。<strong>服务提供者</strong>将自己的<strong>ip和端口</strong>注册到<strong>服务中介</strong>，<strong>服务消费者</strong>根据目标服务名从<strong>服务中介</strong>获取地址进行请求。</p>
+<h2 id="zookeeper">基于Zookeeper实现服务注册与发现</h2>
 <p><img alt="img" src="https://img-blog.csdn.net/20160229174312700" /></p>
 <h3 id="_3">服务注册流程</h3>
 <ul>
@@ -181,6 +199,9 @@
 <li>A调用B时根据负载均衡策略选择一个B进行请求。 </li>
 </ul>
 <h3 id="_4">服务健康</h3>
+<blockquote>
+<p>使用 ZooKeeper 作为服务注册中心时，服务的健康检测常利用 ZooKeeper 的 Session 活性 Track机制 以及结合 Ephemeral ZNode的机制，简单而言，就是将服务的健康监测绑定在了 ZooKeeper 对于 Session 的健康监测上，或者说绑定在TCP长链接活性探测上了。</p>
+</blockquote>
 <h3 id="_5">服务下线</h3>
 <ul>
 <li>当某一个服务B由于异常或人为关闭后，zookeeper集群某一个节点会探测到B节点的变化，更新本节点B的服务列表；</li>
@@ -192,15 +213,29 @@
 <li>B挂掉到A本地缓存列表更新，大概需要3-5s时间（根据网络环境不同）</li>
 <li>此时当A访问B报错时，需要根据具体报错信息，处理特定异常进行自动重发。</li>
 </ul>
-<h3 id="zookeeper">zookeeper负载均衡的实现思路</h3>
+<h3 id="zookeeper_1">zookeeper负载均衡的实现思路</h3>
 <p>zookeeper没有内置负载均衡的实现，需要自己实现。但是可以利用zookeeper的树形数据结构、watcher机制等特性，把zookeeper作为服务和变更通知中心。</p>
 <p>？nginx负载均衡的实现思路？</p>
-<h3 id="zookeeper_1">zookeeper服务注册与发现的缺点</h3>
+<h3 id="zookeeper_2">zookeeper为什么不适合作为注册中心</h3>
+<p><a href="http://jm.taobao.org/2018/06/13/%E5%81%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%9F/">阿里巴巴为什么不用 ZooKeeper 做服务发现？</a></p>
+<p><a href="https://mp.weixin.qq.com/s/y3Ic_XJFEWlIqZ8YcVokxw">微服务注册中心的选型和思考</a></p>
+<p>主要有以下几点局限：</p>
 <ul>
 <li>服务发现速度慢，从服务挂掉到消费者感知需要一定时间；</li>
-<li>zookeeper作为服务发现还存在可用性差的问题。因为zookeeper的设计只能保证CAP中的CP。</li>
-<li>任何时刻对zookeeper的访问请求能得到一致的数据结果</li>
+<li>无法保证可用性，因为zookeeper的设计只能保证CAP中的CP。</li>
+<li>当重新选举Leader时，集群无法对外提供服务；</li>
+<li>一旦某个机房发生网络分区，即该机房在网络上成了孤岛。这就会出现该机房的zk节点由于无法连接leader节点，可读不可写的情况。并且该机房的所有服务不能新部署、重启、扩容和缩容。不然就会出现服务之间无法调用的情况。这其实已经违背了<code>注册中心不应该破坏服务之间的可连通性</code>的初衷。</li>
+<li>性能差。Zookeeper的性能在大规模服务集群场景中存在瓶颈。</li>
+<li>Zookeeper的写操作都是leader处理的，无法通过水平扩容提高写性能。</li>
+<li>存在大量长连接。</li>
+<li>每一个写请求都会写事务日志，同时会定期将内存数据镜像dump到磁盘。这会导致性能的降低。</li>
+<li>服务探活</li>
+<li>服务容灾</li>
+<li>客户端设计不优雅</li>
+<li>易用难精</li>
 </ul>
+<h3 id="zookeeper_3">Zookeeper服务注册与发现有那些坑？</h3>
+<p><a href="https://yq.aliyun.com/articles/227260">采用zookeeper的EPHEMERAL节点机制实现服务集群的陷阱</a></p>
 <h2 id="_7">服务注册与发现进阶</h2>
 <h3 id="ip">如何确定注册的IP和端口？</h3>
 <p><strong>确定IP</strong></p>
@@ -238,19 +273,42 @@
 </ul>
 <p>缺点：主动调用接口无法做到通用</p>
 <h3 id="_11">如何方便的查看某个应用发布和订阅了哪些服务，以及所订阅的服务有哪些节点？</h3>
-<h2 id="_12">服务注册与发现的技术选型</h2>
-<p>现状是采用zookeeper进行服务注册与发现。</p>
-<p>服务注册：</p>
-<p>本地配置ip和端口注册到zookeeper</p>
-<p>服务发现：</p>
-<p>监听某个服务的zookeeper节点，并将其放入本地缓存（key,ServiceCache）</p>
-<p>通过ServiceCache.getInstances方法获取某个服务的所有实例；</p>
-<p>随机挑选一个进行调用，并进行健康检查；</p>
-<p>不可用，则在剩余其他服务中随机挑选一个健康的；</p>
-<p>若都不健康，则随机挑选一个。</p>
-<h2 id="_13">参考</h2>
+<ul>
+<li>一个好的产品，用户使用体验和运维体验必须是优雅的，如果查看本机发布和订阅的服务，只能通过查看日志，甚至是 jmap 的方式来获取，显然体验非常糟糕。</li>
+<li>服务注册中心应该提供了丰富的接口，支持根据应用名、IP、订阅服务名、发布服务名，来进行多层次的组合查询。</li>
+<li>同时，客户端的内存里，同样也应该保留服务发布与订阅的各种信息，并提供方式供人方便地查询。</li>
+<li>比如在 Java 中的 Spring Boot 的应用，可以结合 actuator endpoint，通过 HTTP 的方式来提供本机服务查询功能，查询此应用发布的服务，以及订阅的服务及各服务的对应节点。</li>
+</ul>
+<h3 id="_12">服务容灾</h3>
+<p><a href="http://jm.taobao.org/2018/06/13/做服务发现？/#注册中心的容灾考虑">注册中心的容灾考虑</a>中提到，</p>
+<blockquote>
+<p><strong>在实践中，注册中心不能因为自身的任何原因破坏服务之间本身的可连通性</strong>。</p>
+<p>服务调用（请求响应流）链路应该是弱依赖注册中心，必须仅在服务发布，机器上下线，服务扩缩容等必要时才依赖注册中心。</p>
+<p>这需要注册中心仔细的设计自己提供的客户端，客户端中应该有针对注册中心服务完全不可用时做容灾的手段，例如设计客户端<strong>缓存数据机制</strong>（我们称之为 client snapshot）就是行之有效的手段。另外，注册中心的 <strong>health check</strong> 机制也要仔细设计以便在这种情况不会出现诸如推空等情况的出现。</p>
+</blockquote>
+<h2 id="_13">服务注册发现的技术对比与选型</h2>
+<p><img alt="服务注册与发现技术对照表" src="https://mmbiz.qpic.cn/mmbiz_jpg/wv3K6j4ibl939BZF8TU5SNvYwaQVgibUCpQ02oH9YxSXEAiaNVQKY4iaUXwdWpicW08KIYflPJExtiacLMfI0mQVHWHQ/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<h3 id="watch">watch</h3>
+<blockquote>
+<p>Zookeeper 的 watch 实现比较简单，就是 TCP Ping。</p>
+<p>Long Polling（长轮询）是拉模式，客户端每隔一段时间请求拉取一次数据。</p>
+<p>客户端发起 Long Polling，如果服务端没有数据，会等待，直到服务端有数据，或者等待到超时，返回后，客户端会再次发起 Long Polling。</p>
+</blockquote>
+<h3 id="_14">服务健康检查</h3>
+<blockquote>
+<p>心跳方式比较简单，客户端上报自己的存活状态即可。</p>
+<p>但存活不代表健康，例如一个应用的服务层没问题，但数据库连接故障了，那么就无法正常提供服务，这就是存活但不健康。</p>
+<p>Eureka 支持服务自定义健康检查逻辑。</p>
+<p>Consul 支持的很全面，可以配置服务自定义的健康检查接口地址，还有完善的管理界面，可以查看所有服务和节点的健康检查状态。</p>
+</blockquote>
+<h2 id="_15">参考</h2>
 <ul>
 <li>https://crossoverjie.top/2018/08/27/distributed/distributed-discovery-zk/</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzA4Nzc4MjI4MQ==&amp;mid=2652403302&amp;idx=1&amp;sn=f1320133d072ac6f0d35a4fd1dfcd2f0">服务注册发现技术对比</a></li>
+<li><a href="[http://jm.taobao.org/2018/06/26/%E8%81%8A%E8%81%8A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%9A%84%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0/](http://jm.taobao.org/2018/06/26/聊聊微服务的服务注册与发现/)">聊聊微服务的服务注册与发现</a></li>
+<li><a href="http://jm.taobao.org/2018/06/13/%E5%81%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%9F/">阿里巴巴为什么不用 ZooKeeper 做服务发现？</a></li>
+<li><a href="https://medium.com/knerd/eureka-why-you-shouldnt-use-zookeeper-for-service-discovery-4932c5c7e764">Eureka! Why You Shouldn’t Use ZooKeeper for Service Discovery</a></li>
+<li><a href="https://yq.aliyun.com/articles/227260">采用zookeeper的EPHEMERAL节点机制实现服务集群的陷阱</a></li>
 </ul>
               
             </div>

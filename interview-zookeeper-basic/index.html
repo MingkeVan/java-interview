@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Zookeeper - JavaInterview</title>
+  <title>Zookeeper基础 - JavaInterview</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../css/theme.css" />
@@ -18,8 +18,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Zookeeper";
-    var mkdocs_page_input_path = "interview-zookeeper.md";
+    var mkdocs_page_name = "Zookeeper\u57fa\u7840";
+    var mkdocs_page_input_path = "interview-zookeeper-basic.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -68,45 +68,57 @@
                     </li>
                 </ul>
                 <ul class="current">
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Zookeeper</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Zookeeper基础</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#zookeeper_1">zookeeper的重要概念</a>
+    <li class="toctree-l2"><a class="reference internal" href="#zookeeper_1">zookeeper概念</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#zookeeper_2">Zookeeper节点类型</a>
+    <li class="toctree-l3"><a class="reference internal" href="#zookeeper_2">Zookeeper数据模型</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#zookeeper_3">Zookeeper集群</a>
+    <li class="toctree-l3"><a class="reference internal" href="#znode">znode节点属性</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#_1">心跳机制</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#_2">集群角色</a>
+    <li class="toctree-l3"><a class="reference internal" href="#znode_1">znode节点类型</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#zookeeper_4">zookeeper的特性</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#zookeeperleader">zookeeper的Leader选举算法</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_3">数据快照机制</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_4">数据清理机制</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_5">会话机制</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_6">长连接机制</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#zab">ZAB协议算法</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_7">客户端调度策略</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#curator">curator源码解析</a>
+    <li class="toctree-l2"><a class="reference internal" href="#zookeeperwatcher">Zookeeper的灵魂Watcher机制</a>
         <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1watcher">1、什么是watcher？</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2watcher">2、watcher类型？</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3watcher">3、watcher特性</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#zookeeper_3">Zookeeper集群</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_1">集群角色</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">集群心跳机制</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#zookeeper_4">Zookeeper的特性</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#zookeeper_5">Zookeeper的使用场景</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#zookeepercurator">Zookeeper客户端curator</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_3">客户端调度策略</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#curator">curator源码解析</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#watchnodecachepathchildrencachetreecache">Watch监听机制(NodeCache,PathChildrenCache,TreeCache)</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_8">参考</a>
+    <li class="toctree-l2"><a class="reference internal" href="#_4">参考</a>
     </li>
     </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-zookeeper-theory/">Zookeeper原理</a>
                     </li>
                 </ul>
                 <ul>
@@ -162,7 +174,7 @@
     
       
     
-    <li>Zookeeper</li>
+    <li>Zookeeper基础</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -173,24 +185,33 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="zookeeper">zookeeper服务注册与发现</h1>
-<h2 id="zookeeper_1">zookeeper的重要概念</h2>
-<h3 id="zookeeper_2">Zookeeper节点类型</h3>
+                <h1 id="zookeeper">zookeeper基础</h1>
+<h2 id="zookeeper_1">zookeeper概念</h2>
+<h3 id="zookeeper_2">Zookeeper数据模型</h3>
+<p><code>zookeeper</code> 维护了一个类似文件系统的数据结构，每个子目录（/微信、/微信/公众号）都被称作为 <code>znode</code> 即节点。和文件系统一样，我们可以很轻松的对 <code>znode</code> 节点进行增加、删除等操作，而且还可以在一个<code>znode</code>下增加、删除<code>子znode</code>。每个<code>znode</code>可存储的最大数据量为1Mb。</p>
+<h3 id="znode">znode节点属性</h3>
+<p><img alt="znode节点属性" src="https://mmbiz.qpic.cn/mmbiz_png/0OzaL5uW2aP4Ow8yhvlcRzp6Scq09sGrB1PP8mYwySoYgRkrkhrGsyLpMzI49H8gWyEvqYYrxutHSic5MUqsRXQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<h3 id="znode_1">znode节点类型</h3>
 <ul>
 <li>持久节点</li>
 <li>持久顺序节点</li>
 <li>临时节点</li>
 <li>临时顺序节点</li>
 </ul>
-<h3 id="zookeeper_3">Zookeeper集群</h3>
+<h2 id="zookeeperwatcher">Zookeeper的灵魂Watcher机制</h2>
+<h3 id="1watcher">1、什么是watcher？</h3>
+<p><code>watcher</code> 是<code>zooKeeper</code>中一个非常核心功能 ，客户端<code>watcher</code> 可以监控节点的数据变化以及它子节点的变化，一旦这些状态发生变化，zooKeeper服务端就会通知所有在这个节点上设置过<code>watcher</code>的客户端 ，从而每个客户端都很快感知，它所监听的节点状态发生变化，而做出对应的逻辑处理。</p>
+<h3 id="2watcher">2、watcher类型？</h3>
+<p>znode节点可以设置两类watch，一种是对znode数据的<strong>DataWatch</strong>，一种是对znode孩子节点的<strong>ChildWatch</strong>。删除znode时会同时触发<strong>DataWatch</strong>和<strong>ChildWatch</strong>。如果被删除的节点还有父节点，父节点还会触发<strong>ChildWatch</strong>。</p>
+<h3 id="3watcher">3、watcher特性</h3>
+<p>watch对节点的监听事件是一次性的。使用curator客户端时，可以自动重新设置监听。</p>
+<h2 id="zookeeper_3">Zookeeper集群</h2>
 <p>Zookeeper 是一个由多个 server 组成的集群,一个 leader，多个 follower。（这个不同于我们常见的Master/Slave模式）</p>
 <p>leader 为客户端服务器提供<strong>读写服务</strong>，除了leader外其他的机器只能提供<strong>读服务</strong>。</p>
 <p>每个 server 保存一份数据副本全数据一致，分布式读 follower，<strong>写由 leader 实施更新请求转发，由 leader 实施更新请求顺序进行，来自同一个 client 的更新请求按其发送顺序依次执行数据更新</strong>。</p>
 <p>原子性，一次数据更新要么成功，要么失败。</p>
 <p>全局唯一数据视图，client 无论连接到哪个 server，数据视图都是一致的实时性，在一定事件范围内，client 能读到最新数据。</p>
-<h3 id="_1">心跳机制</h3>
-<p>Leader和Follower之间通过<strong>PING</strong>来感知对方的存活，一旦与leader的心跳中断，就需要重新进行leader选举。</p>
-<h3 id="_2">集群角色</h3>
+<h3 id="_1">集群角色</h3>
 <ul>
 <li>
 <p>Leader</p>
@@ -210,7 +231,9 @@
 </ul>
 </li>
 </ul>
-<h2 id="zookeeper_4">zookeeper的特性</h2>
+<h3 id="_2">集群心跳机制</h3>
+<p>Leader和Follower之间通过<strong>PING</strong>来感知对方的存活，一旦与leader的心跳中断，就需要重新进行leader选举。</p>
+<h2 id="zookeeper_4">Zookeeper的特性</h2>
 <ul>
 <li>
 <p>顺序一致性，从同一个客户端发起的事务请求，最终将会严格地按照其发起顺序被应用到Zookeeper中去。</p>
@@ -228,51 +251,27 @@
 <p>实时性，Zookeeper 保证在一定的时间段内，客户端最终一定能够从服务端上读取到最新的数据状态。</p>
 </li>
 </ul>
-<h2 id="zookeeperleader">zookeeper的Leader选举算法</h2>
-<blockquote>
-<p>https://mp.weixin.qq.com/s/6Lai6Gw9h2YAinS4QqNOLA</p>
-</blockquote>
-<p><strong>名次解释</strong></p>
+<h2 id="zookeeper_5">Zookeeper的使用场景</h2>
 <ul>
-<li>
-<p><strong>myid</strong>:节点id</p>
-</li>
-<li>
-<p><strong>zxid</strong>:节点事务id（事务id大的代表该节点拥有最新数据）</p>
-</li>
-<li>
-<p>选票pk规则：</p>
-<p>（a）优先对比ZXID，ZXID大的优先作为Leader（ZXID大的表示数据多）</p>
-<p>（b）如果ZXID一样的话，那么就比较myid，让myid大的作为Leader服务器。</p>
-</li>
+<li>服务注册与发现。</li>
+<li>分布式锁。利用watcher机制和znode的临时有序节点。</li>
+<li>分布式队列。利用有序节点。</li>
+<li>配置管理。利用watcher机制，如Kafka使用Zookeeper维护broker的信息，dubbo管理服务的配置信息。一旦修改如/config节点的配置，就能通知各个客户端重新拉取配置信息。</li>
 </ul>
-<p><img alt="zookeeper选举的核心算法逻辑图" src="https://mmbiz.qpic.cn/mmbiz_png/9TPn66HT932oicKR4gsickpFp0CztzETKUfV2IdYdicm5XIoAsI1xD4XULicd5tBiazkpsKCptSbOVGVoLDAph2ZldQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
-<p>简单来说，选举分为以下步骤：
-1. 投票；
-1. 选票pk；
-1. 统一选票，并调整或坚持投票；</p>
-<p>超过半数即可终止投票。（zookeeper集群推荐为单数，服务器成本较低，与超过半数（n/2+1）有关）</p>
-<p>Q1: Leader挂掉后恢复，如何解决多leader的问题？</p>
-<p>A1: follower和leader间存在心跳，原leader恢复后发现其他节点与自己的心跳没了，就知道自己已经被驱逐了，然后就会调整自己为follower。</p>
-<h2 id="_3">数据快照机制</h2>
-<h2 id="_4">数据清理机制</h2>
-<h2 id="_5">会话机制</h2>
-<h2 id="_6">长连接机制</h2>
-<h2 id="zab">ZAB协议算法</h2>
-<h2 id="_7">客户端调度策略</h2>
+<h2 id="zookeepercurator">Zookeeper客户端curator</h2>
+<h3 id="_3">客户端调度策略</h3>
 <ul>
 <li>随机策略</li>
 <li>round robin策略（按顺序轮询）</li>
 </ul>
-<h2 id="curator">curator源码解析</h2>
+<h3 id="curator">curator源码解析</h3>
 <h3 id="watchnodecachepathchildrencachetreecache">Watch监听机制(NodeCache,PathChildrenCache,TreeCache)</h3>
 <p>https://blog.csdn.net/hosaos/article/details/88658676</p>
 <hr />
-<h2 id="_8">参考</h2>
+<h2 id="_4">参考</h2>
 <ul>
 <li>https://juejin.im/post/5baf7db75188255c3d11622e</li>
-<li><a href="http://www.yidooo.net/2014/10/18/zookeeper-leader-election.html">Zookeeper源码分析-Zookeeper Leader选举算法</a></li>
-<li><a href="http://www.yidooo.net/categories/Big-Data/ZooKeeper/">Zookeeper源码分析</a></li>
+<li><a href="https://mp.weixin.qq.com/s/FdG5jd3zEh6ug3vbE-zhLg">你的简历写了 “熟悉” zookeeper ？那这些你会吗？</a></li>
 </ul>
               
             </div>
@@ -281,7 +280,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../interview-os/" class="btn btn-neutral float-right" title="操作系统">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../interview-zookeeper-theory/" class="btn btn-neutral float-right" title="Zookeeper原理">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../interview-kafka/" class="btn btn-neutral" title="Kafka"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -313,7 +312,7 @@
         <span><a href="../interview-kafka/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../interview-os/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../interview-zookeeper-theory/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

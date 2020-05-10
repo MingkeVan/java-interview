@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Linux - JavaInterview</title>
+  <title>Zookeeper原理 - JavaInterview</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../css/theme.css" />
@@ -18,8 +18,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Linux";
-    var mkdocs_page_input_path = "interview-os-linux.md";
+    var mkdocs_page_name = "Zookeeper\u539f\u7406";
+    var mkdocs_page_input_path = "interview-zookeeper-theory.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -71,20 +71,32 @@
                     <li class="toctree-l1"><a class="reference internal" href="../interview-zookeeper-basic/">Zookeeper基础</a>
                     </li>
                 </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../interview-zookeeper-theory/">Zookeeper原理</a>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Zookeeper原理</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#zookeeperleader">zookeeper的Leader选举算法</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_1">数据快照机制</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">数据清理机制</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">会话机制</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_4">长连接机制</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#zab">ZAB协议算法</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_5">参考</a>
+    </li>
+    </ul>
                     </li>
                 </ul>
                 <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../interview-os/">操作系统</a>
                     </li>
                 </ul>
-                <ul class="current">
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Linux</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#_1">指令</a>
-    </li>
-    </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-os-linux/">Linux</a>
                     </li>
                 </ul>
                 <ul>
@@ -132,7 +144,7 @@
     
       
     
-    <li>Linux</li>
+    <li>Zookeeper原理</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -143,31 +155,44 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="linux">Linux</h1>
-<h2 id="_1">指令</h2>
-<p>ls -l : 按行打开所有文件</p>
-<p>ls -a: 显示包含隐藏文件在内的所有文件</p>
-<p>ls -la : 显示所有</p>
-<p>ls -lh:可以显示文件大小</p>
-<p>ls -lS: 根据文件大小排序</p>
-<p>ls -ltr：根据修改日期排序</p>
-<p>Linux相关：</p>
-<p>top查看进程资源占用情况；</p>
-<p>netstat 查看端口</p>
-<p>ps aux | grep java 查看进程</p>
-<p>kill -9 pid 强制终止 kill -3 pid 生成线程dump文件</p>
-<p>使用JDK自带的Jconsole，可视化工具，可以检测内存、死锁等</p>
-<p>Jstack是Jdk自带的命令行工具，可以查看线程dump</p>
-<p>jmap打印堆dump</p>
-<p>jvisualvm用来加载dump文件进行分析，也可以远程监控服务器。</p>
-<p><strong>inode：</strong></p>
-<p>硬盘格式化的时候，操作系统会将硬盘分为两个区域、数据区和inode区（存放指向block的索引）</p>
-<p>df -i 查看inode节点总数和已经使用的数量</p>
-<p>stat命令查看某个文件的inode信息 ，</p>
-<p>通过文件名打开文件过程：</p>
-<p>系统内部这个过程分成三步：首先，系统找到这个文件名对应的inode号码；其次，通过inode号码，获取inode信息；最后，根据inode信息，找到文件数据所在的block，读出数据。</p>
-<p>读权限r只能获取文件名；执行权限x可以读取inode节点的信息</p>
-<p>硬链接可以使多个文件名指向相同inode，软连接相当于快捷方式</p>
+                <h1 id="zookeeper">Zookeeper原理</h1>
+<h2 id="zookeeperleader">zookeeper的Leader选举算法</h2>
+<blockquote>
+<p>https://mp.weixin.qq.com/s/6Lai6Gw9h2YAinS4QqNOLA</p>
+</blockquote>
+<p><strong>名次解释</strong></p>
+<ul>
+<li>
+<p><strong>myid</strong>:节点id</p>
+</li>
+<li>
+<p><strong>zxid</strong>:节点事务id（事务id大的代表该节点拥有最新数据）</p>
+</li>
+<li>
+<p>选票pk规则：</p>
+<p>（a）优先对比ZXID，ZXID大的优先作为Leader（ZXID大的表示数据多）</p>
+<p>（b）如果ZXID一样的话，那么就比较myid，让myid大的作为Leader服务器。</p>
+</li>
+</ul>
+<p><img alt="zookeeper选举的核心算法逻辑图" src="https://mmbiz.qpic.cn/mmbiz_png/9TPn66HT932oicKR4gsickpFp0CztzETKUfV2IdYdicm5XIoAsI1xD4XULicd5tBiazkpsKCptSbOVGVoLDAph2ZldQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p>简单来说，选举分为以下步骤：
+1. 投票；
+1. 选票pk；
+1. 统一选票，并调整或坚持投票；</p>
+<p>超过半数即可终止投票。（zookeeper集群推荐为单数，服务器成本较低，与超过半数（n/2+1）有关）</p>
+<p>Q1: Leader挂掉后恢复，如何解决多leader的问题？</p>
+<p>A1: follower和leader间存在心跳，原leader恢复后发现其他节点与自己的心跳没了，就知道自己已经被驱逐了，然后就会调整自己为follower。</p>
+<h2 id="_1">数据快照机制</h2>
+<h2 id="_2">数据清理机制</h2>
+<h2 id="_3">会话机制</h2>
+<h2 id="_4">长连接机制</h2>
+<h2 id="zab">ZAB协议算法</h2>
+<h2 id="_5">参考</h2>
+<ul>
+<li>https://juejin.im/post/5baf7db75188255c3d11622e</li>
+<li><a href="http://www.yidooo.net/2014/10/18/zookeeper-leader-election.html">Zookeeper源码分析-Zookeeper Leader选举算法</a></li>
+<li><a href="http://www.yidooo.net/categories/Big-Data/ZooKeeper/">Zookeeper源码分析</a></li>
+</ul>
               
             </div>
           </div>
@@ -175,10 +200,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../interview-network/" class="btn btn-neutral float-right" title="计算机网络">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../interview-os/" class="btn btn-neutral float-right" title="操作系统">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../interview-os/" class="btn btn-neutral" title="操作系统"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../interview-zookeeper-basic/" class="btn btn-neutral" title="Zookeeper基础"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -204,10 +229,10 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../interview-os/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../interview-zookeeper-basic/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../interview-network/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../interview-os/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
