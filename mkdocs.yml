@@ -6,7 +6,8 @@ nav:
     - Mysql: interview-sql.md
     - Redis: interview-redis.md
     - Kafka: interview-kafka.md
-    - Zookeeper: interview-zookeeper.md
+    - Zookeeper基础: interview-zookeeper-basic.md
+    - Zookeeper原理: interview-zookeeper-theory.md
     - 操作系统: interview-os.md
     - Linux: interview-os-linux.md
     - 计算机网络: interview-network.md
