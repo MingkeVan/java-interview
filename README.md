@@ -16,7 +16,11 @@ https://mingkevan.github.io/java-interview/
 
 - [x] 服务注册与发现
 - [x] zookeeper基础和原理
-- [ ] API鉴权
+- [x] API鉴权
+- [x] 分布式缓存
+- [ ] 分布式事务
+- [ ] 一致性协议
+- [x] API鉴权
 - [ ] RPC框架
 
     
