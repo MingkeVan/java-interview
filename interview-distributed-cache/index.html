@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>分布式系统之分布式缓存 - JavaInterview</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "\u5206\u5e03\u5f0f\u7cfb\u7edf\u4e4b\u5206\u5e03\u5f0f\u7f13\u5b58";
+    var mkdocs_page_input_path = "interview-distributed-cache.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> JavaInterview</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-java-basic/">Java基础</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-java-spring/">Spring</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-sql/">Mysql</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-redis/">Redis</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-kafka/">Kafka</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-zookeeper-basic/">Zookeeper基础</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-zookeeper-theory/">Zookeeper原理</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-os/">操作系统</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-os-linux/">Linux</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-network/">计算机网络</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-microservice/">微服务之服务注册与发现</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-distributed-systems-theory/">分布式系统之基本理论</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">分布式系统之分布式缓存</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_2">缓存模式</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cache-aside-pattern">Cache Aside Pattern</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#read-through">Read Through</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#write-through">Write Through</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#write-behindwrite-back">Write Behind/Write Back</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">其他</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_4">参考</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-design-patterns/">设计模式</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../others/">其他</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">JavaInterview</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>分布式系统之分布式缓存</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="_1">分布式缓存</h1>
+<h2 id="_2">缓存模式</h2>
+<blockquote>
+<p><a href="https://stephanietang.github.io/2020/04/13/cache-pattern/">缓存模式以及缓存的数据一致性</a></p>
+<p><a href="https://coolshell.cn/articles/17416.html">缓存更新的套路</a></p>
+</blockquote>
+<ul>
+<li>Cache-Aside</li>
+<li>Read-Through</li>
+<li>Write-Through</li>
+<li>Write behind caching</li>
+</ul>
+<h2 id="cache-aside-pattern">Cache Aside Pattern</h2>
+<p><strong>读数据</strong></p>
+<p>先读缓存；缓存读不到，则读数据库；然后将结果放到缓存中。</p>
+<p><img alt="cache aside-read data" src="https://i.niupic.com/images/2020/04/13/7oXo.PNG" /></p>
+<p><strong>写数据</strong></p>
+<p>写数据有两种策略：</p>
+<ul>
+<li>先更新数据库，然后直接更新缓存。这种策略的问题是如果出现并发写，可能会导致缓存中出现脏数据。</li>
+</ul>
+<blockquote>
+<p>试想有两个写的线程，线程A和线程B</p>
+<ol>
+<li>A写数据库</li>
+<li>B后于A写数据库</li>
+<li>B写缓存</li>
+<li>A写缓存</li>
+<li>缓存和数据库中的数据不一致，缓存中的是脏数据</li>
+</ol>
+</blockquote>
+<p><img alt="cache aside-write data" src="https://i.niupic.com/images/2020/04/13/7oXC.PNG" /></p>
+<ul>
+<li>先更新数据库；然后删除缓存。这种策略是最常用的策略，但是也有可能出现脏数据的情况.</li>
+</ul>
+<blockquote>
+<p>试想一下有两个线程，线程A读，线程B写</p>
+<ol>
+<li>A读数据，由于未命中那么从数据库中取数据</li>
+<li>B写数据库</li>
+<li>B删除缓存</li>
+<li>A由于网络延迟比较慢，将脏数据写入缓存</li>
+</ol>
+</blockquote>
+<p>但是概率要低很多。另外最好对缓存中的数据设置合适的过期时间，这样能进一步减少出现脏数据的情况。</p>
+<blockquote>
+<p>因为这个条件需要发生在读缓存时缓存失效，而且并发着有一个写操作。而实际上数据库的写操作会比读操作慢得多，而且还要锁表，而读操作必需在写操作前进入数据库操作，而又要晚于写操作更新缓存，所有的这些条件都具备的概率基本并不大。</p>
+</blockquote>
+<h2 id="read-through">Read Through</h2>
+<p>读取数据时直接读取缓存；如果缓存没有命中，则由缓存服务读取数据库后，再返回。</p>
+<h2 id="write-through">Write Through</h2>
+<p>更新数据时优先更新缓存，然后缓存服务同步更新数据库；缓存中不存在则直接更新数据库。</p>
+<p><img alt="write through" src="https://coolshell.cn/wp-content/uploads/2016/07/460px-Write-through_with_no-write-allocation.svg_.png" /></p>
+<h2 id="write-behindwrite-back">Write Behind/Write Back</h2>
+<p>类似Linux文件系统的Page Cache算法。在更新数据的时候，只更新缓存，由缓存自己异步地批量更新数据库。</p>
+<p>缺点是数据不是强一致性的，所以可能会丢失数据。</p>
+<p>另外Write Back实现逻辑比较复杂，参照下面的图示，以及<a href="https://en.wikipedia.org/wiki/Cache_(computing)">维基百科的解释</a>。</p>
+<p><img alt="Write Back" src="https://coolshell.cn/wp-content/uploads/2016/07/Write-back_with_write-allocation.png" /></p>
+<h2 id="_3">其他</h2>
+<p>上边讨论的内容没有考虑更新缓存和更新数据库的事务问题。比如更新缓存成功，而更新数据库失败。如果需要强一致性，则需要通过两阶段提交协议。</p>
+<h3 id="_4">参考</h3>
+<ul>
+<li><a href="https://stephanietang.github.io/2020/04/13/cache-pattern/">缓存模式以及缓存的数据一致性</a></li>
+<li><a href="https://coolshell.cn/articles/17416.html">缓存更新的套路</a></li>
+<li>https://en.wikipedia.org/wiki/Cache_(computing)</li>
+<li>https://mp.weixin.qq.com/s?__biz=MjM5ODYxMDA5OQ==&amp;mid=403963671&amp;idx=1&amp;sn=51a2d2fd70212451cd5f22bbe2c6f8d6&amp;scene=21#wechat_redirect</li>
+<li>https://mp.weixin.qq.com/s?__biz=MjM5ODYxMDA5OQ==&amp;mid=404202261&amp;idx=1&amp;sn=1b8254ba5013952923bdc21e0579108e&amp;scene=21#wechat_redirect</li>
+<li>https://mp.weixin.qq.com/s?__biz=MjM5ODYxMDA5OQ==&amp;mid=404087915&amp;idx=1&amp;sn=075664193f334874a3fc87fd4f712ebc&amp;scene=21#wechat_redirect</li>
+<li>https://mp.weixin.qq.com/s?__biz=MjM5ODYxMDA5OQ==&amp;mid=404308725&amp;idx=1&amp;sn=1a25ce76dd1956014ceb8a011855268e&amp;scene=21#wechat_redirect</li>
+<li>https://www.cnblogs.com/rjzheng/p/9041659.html</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../interview-design-patterns/" class="btn btn-neutral float-right" title="设计模式">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../interview-distributed-systems-theory/" class="btn btn-neutral" title="分布式系统之基本理论"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../interview-distributed-systems-theory/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../interview-design-patterns/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

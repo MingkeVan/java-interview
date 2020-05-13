@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>分布式系统 - JavaInterview</title>
+  <title>分布式系统之基本理论 - JavaInterview</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../css/theme.css" />
@@ -18,8 +18,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "\u5206\u5e03\u5f0f\u7cfb\u7edf";
-    var mkdocs_page_input_path = "interview-distributed-systems.md";
+    var mkdocs_page_name = "\u5206\u5e03\u5f0f\u7cfb\u7edf\u4e4b\u57fa\u672c\u7406\u8bba";
+    var mkdocs_page_input_path = "interview-distributed-systems-theory.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -92,7 +92,7 @@
                     </li>
                 </ul>
                 <ul class="current">
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">分布式系统</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">分布式系统之基本理论</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#acid">ACID</a>
     </li>
@@ -148,19 +148,17 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#_3">分布式事务</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_4">分布式缓存</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#_5">缓存模式</a>
+    <li class="toctree-l2"><a class="reference internal" href="#_4">分布式存储</a>
     </li>
-        </ul>
+    <li class="toctree-l2"><a class="reference internal" href="#_5">分布式计算</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_6">分布式存储</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_7">分布式计算</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_8">参考</a>
+    <li class="toctree-l2"><a class="reference internal" href="#_6">参考</a>
     </li>
     </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-distributed-cache/">分布式系统之分布式缓存</a>
                     </li>
                 </ul>
                 <ul>
@@ -196,7 +194,7 @@
     
       
     
-    <li>分布式系统</li>
+    <li>分布式系统之基本理论</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -268,24 +266,13 @@
 <li>可靠消息模式</li>
 </ul>
 <h2 id="_3">分布式事务</h2>
-<h2 id="_4">分布式缓存</h2>
-<h3 id="_5">缓存模式</h3>
-<blockquote>
-<p><a href="https://stephanietang.github.io/2020/04/13/cache-pattern/">缓存模式以及缓存的数据一致性</a></p>
-<p><a href="https://coolshell.cn/articles/17416.html">缓存更新的套路</a></p>
-</blockquote>
-<ul>
-<li>Cache-Aside</li>
-<li>Read-Through/Write-Through</li>
-</ul>
-<h2 id="_6">分布式存储</h2>
-<h2 id="_7">分布式计算</h2>
-<h2 id="_8">参考</h2>
+<h2 id="_4">分布式存储</h2>
+<h2 id="_5">分布式计算</h2>
+<h2 id="_6">参考</h2>
 <ul>
 <li><a href="https://www.jianshu.com/p/1156151e20c8">分布式服务化系统一致性的“最佳实干”</a></li>
 <li><a href="http://www.yidooo.net/2019/02/28/cap-theorem.html">分布式系统 - CAP定理</a></li>
 <li><a href="http://www.yidooo.net/2019/04/21/base-theorem.html">分布式系统 - BASE理论</a></li>
-<li><a href="https://coolshell.cn/articles/17416.html">缓存更新的套路</a></li>
 </ul>
               
             </div>
@@ -294,7 +281,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../interview-design-patterns/" class="btn btn-neutral float-right" title="设计模式">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../interview-distributed-cache/" class="btn btn-neutral float-right" title="分布式系统之分布式缓存">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../interview-microservice/" class="btn btn-neutral" title="微服务之服务注册与发现"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -326,7 +313,7 @@
         <span><a href="../interview-microservice/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../interview-design-patterns/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../interview-distributed-cache/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>微服务架构下的鉴权 - JavaInterview</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "\u5fae\u670d\u52a1\u67b6\u6784\u4e0b\u7684\u9274\u6743";
+    var mkdocs_page_input_path = "2020-05-12-api-security.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> JavaInterview</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-java-basic/">Java基础</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-java-spring/">Spring</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-sql/">Mysql</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-redis/">Redis</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-kafka/">Kafka</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-zookeeper-basic/">Zookeeper基础</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-zookeeper-theory/">Zookeeper原理</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-os/">操作系统</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-os-linux/">Linux</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-network/">计算机网络</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-microservice/">微服务之服务注册与发现</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-distributed-systems-theory/">分布式系统之基本理论</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-distributed-cache/">分布式系统之分布式缓存</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../interview-design-patterns/">设计模式</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../others/">其他</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">JavaInterview</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>微服务架构下的鉴权</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="_1">微服务架构下的鉴权</h1>
+<h2 id="_2">场景</h2>
+<ul>
+<li>用户-服务的鉴权</li>
+<li>服务-服务的鉴权</li>
+<li>外部应用接入</li>
+</ul>
+<h2 id="_3">四种方案</h2>
+<ul>
+<li>
+<p>单点登录</p>
+</li>
+<li>
+<p>分布式session</p>
+</li>
+<li>
+<p>客户端token。</p>
+</li>
+<li>通过短期令牌解决身份注销问题。</li>
+<li>
+<p>基于JWT实现</p>
+</li>
+<li>
+<p>客户端token与API网关结合</p>
+</li>
+<li>所有请求经过网关，请求时网关将原始用户token转换我内部会话Id的token。</li>
+<li>通过网关注销用户token</li>
+</ul>
+<h2 id="_4">微服务常见安全认证方案</h2>
+<ul>
+<li>http基本认证，将用户名密码放在Authorization头中</li>
+<li>基于session的认证，将认证过的session id存在客户端的cookie中</li>
+<li>基于token的认证。将认证过的token放在http请求头中进行调用</li>
+<li>好处是服务端不用存储session，性能较好；缺点是服务端无法很好地注销该token（也可以记下需要remove的token，下次访问的时候拒绝掉，但这样就失去了token的优势）</li>
+<li>支持移动设备</li>
+<li>支持跨程序调用。（cookie不能跨域）</li>
+</ul>
+<p>基于Token有两种方案，jwt和OAuth2.0。</p>
+<h2 id="tokenjwt">token认证之jwt</h2>
+<p>jwt token注销，常采用短期令牌。避免注销后token依旧可用的风险。</p>
+<h2 id="tokenoauth-20">token认证之Oauth 2.0</h2>
+<blockquote>
+<p>参考http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html</p>
+</blockquote>
+<p>四种模式：</p>
+<ul>
+<li>授权码模式</li>
+<li>简化模式</li>
+<li>密码模式</li>
+<li>客户端模式</li>
+</ul>
+<blockquote>
+<p>https://www.jianshu.com/p/15d0a1c366b3</p>
+<p>总结：服务间鉴权采用jwt，对外权限通过api网关和OAuth结合管理。</p>
+</blockquote>
+<h2 id="_5">权限系统的设计</h2>
+<blockquote>
+<p>https://blog.csdn.net/OmniStack/article/details/77881185?locationNum=10&amp;fps=1</p>
+</blockquote>
+<h3 id="_6">权限模型</h3>
+<p>RBAC模型：Role Based Access Control</p>
+<h3 id="_7">场景需求</h3>
+<ol>
+<li>用户系统多样</li>
+<li>不能影响服务的吞吐量以及可用性</li>
+<li>老系统接入</li>
+</ol>
+<h3 id="_8">设计思路</h3>
+<ul>
+<li>权限系统微服务化</li>
+<li>权限微服务本身也需接入原有体系，走阿里云SLB-&gt;API 网关-&gt;权限微服务。如果是web端的权限严重，还需走Nginx代理。</li>
+<li>通过自定义注解，减少对业务代码的侵入。</li>
+<li>高可用，分布式的权限缓存。基本权限和角色等数据存在mysql数据库。权限验证数据则通过redis集群缓存。<strong>但是当用户关联的角色，权限更新时，需要让对应的缓存失效</strong></li>
+<li>对于业务服务的API权限，支持接口加注解进行拦截验证；对于界面权限，通过权限系统控制。</li>
+</ul>
+<h3 id="_9">包含内容</h3>
+<ul>
+<li>录入和绑定界面</li>
+<li>权限数据导入导出</li>
+<li>权限扩展，结合OAuth和Spring session等</li>
+</ul>
+<h2 id="api">API权限的实现</h2>
+<h3 id="_10">注解</h3>
+<p>@Permission定义接口权限name、label和description</p>
+<p>@Group定义权限组，如每个接口下的所有方法归到一个组</p>
+<p>@UserId，业务服务需要在API上加入用户Id的参数，用于切面验证权限。</p>
+<p>@UserType，用户类型。支持多个用户系统。</p>
+<h3 id="_11">扫描入库和拦截</h3>
+<p>基于Spring AutoProxy实现</p>
+<ul>
+<li>
+<p>创建PermissionAutoProxy.java，继承Spring的org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator类，步骤如下：</p>
+</li>
+<li>
+<p>在构造方法里设置好Interceptor通用代理器（即实现了MethodInterceptor接口的拦截类PermissionInterceptor.java）；</p>
+</li>
+<li>
+<p>shouldProxyTargetClass用来决定是接口代理，还是类代理。在权限定义的时候，其实我们还支持把注解加在实现类上，而不仅仅在接口上，这样灵活运用注解放置的方式。</p>
+</li>
+<li>
+<p>getAdvicesAndAdvisorsForBean是最核心的方法，用来决定哪个类、哪个方法上的注解要被扫描入库，也决定哪个类、哪个方法要被代理。</p>
+</li>
+</ul>
+<p>```java
+   // 返回拦截类，拦截类必须实现MethodInterceptor接口，即PermissionInterceptor
+   protected abstract Class&lt;? extendsMethodInterceptor&gt; getInterceptorClass();</p>
+<p>// 返回接口或者类的方法名上的注解，如果接口或者类中方法名上存在该注解，即认为该接口或者类需要被代理
+   protected abstract Class&lt;? extendsAnnotation&gt; getMethodAnnotationClass();</p>
+<p>// 扫描到接口或者类的方法名上的注解后，所要做的处理
+   protected abstract voidmethodAnnotationScanned(Class&lt;?&gt; targetClass);
+   ```</p>
+<ul>
+<li>
+<p>创建PermissionScanListener.java，实现Spring的org.springframework.context.ApplicationListener.ApplicationListener<ContextRefreshedEvent>接口，步骤如下:</p>
+</li>
+<li>
+<p>onApplicationEvent(ContextRefreshedEvent event)方法里实现入库代码。</p>
+</li>
+<li>在业务服务的Spring容器启动的时候，将自动触发权限数据入库的事件。</li>
+</ul>
+<h2 id="_12">角色管理</h2>
+<p>角色是一组API权限的集合，角色与微服务名挂钩，角色组包含若干角色。</p>
+<p>角色管理通过界面操作。</p>
+<p>角色和权限是多对多的关系，用户和角色是多对多的关系。</p>
+<h2 id="_13">权限验证</h2>
+<p>通过远程<strong>RPC方式</strong>的调用，即通过权限API的方式注入，进行远程调用。</p>
+<p><strong>Rest调用</strong>的验证方式</p>
+<pre><code class="http">http://host:port/authorization/authorize/{userId}/{userType}/{permissionName}/{PermissionType}/{serviceName}
+</code></pre>
+
+<p>通过User ID、User Type、Permission Name（权限名，映射于对应的方法名）、Permission Type（区别是<strong>API权限还是界面权限</strong>），Service Name（应用名）来判断是否被授权，返回结果是true或者false。</p>
+<h2 id="_14">待优化</h2>
+<p>userId和userType需要侵入每一个接口，如何解决？</p>
+<h2 id="_15">参考</h2>
+<ul>
+<li>https://coolshell.cn/articles/19395.html</li>
+<li>https://blog.csdn.net/OmniStack/article/details/77881185?locationNum=10&amp;fps=1</li>
+<li>https://www.jianshu.com/p/15d0a1c366b3</li>
+<li>http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
