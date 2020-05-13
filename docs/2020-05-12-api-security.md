@@ -25,7 +25,7 @@
 * http基本认证，将用户名密码放在Authorization头中
 * 基于session的认证，将认证过的session id存在客户端的cookie中
 * 基于token的认证。将认证过的token放在http请求头中进行调用
-  * 好处是服务端不用存储session，性能较好
+  * 好处是服务端不用存储session，性能较好；缺点是服务端无法很好地注销该token（也可以记下需要remove的token，下次访问的时候拒绝掉，但这样就失去了token的优势）
   * 支持移动设备
   * 支持跨程序调用。（cookie不能跨域）
 
