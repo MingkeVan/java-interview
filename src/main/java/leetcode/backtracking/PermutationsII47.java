@@ -20,7 +20,7 @@ import java.util.*;
  * ]
  * @date: 2020/10/24 22:38
  */
-public class PermutationsII {
+public class PermutationsII47 {
     private  List<List<Integer>> res = new ArrayList<>();
     public List<List<Integer>> permuteUnique(int[] nums) {
         if(nums.length == 0) {
