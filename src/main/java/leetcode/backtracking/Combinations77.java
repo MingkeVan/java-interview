@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Combinations77 {
-    List<List<Integer>> res = new ArrayList<>();
+    List<List<Integer>> res = new ArrayList<List<Integer>>();
 
     public List<List<Integer>> combine(int n, int k) {
         if (n <= 0 || k <= 0 || n < k) {
             return res;
         }
 
-        getCombinations(n, k, 1, new ArrayList<>());
+        getCombinations(n, k, 1, new ArrayList<Integer>());
         return res;
     }
 
     private void getCombinations(int n, int k, int start, List<Integer> cur) {
         if (cur.size() == k) {
-            res.add(new ArrayList<>(cur));
+            res.add(new ArrayList<Integer>(cur));
             return;
         }
 

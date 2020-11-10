@@ -49,19 +49,19 @@ import java.util.List;
  */
 public class CombinationSum39 {
 
-    List<List<Integer>> res = new ArrayList<>();
+    List<List<Integer>> res = new ArrayList<List<Integer>>();
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         if(candidates.length <= 0) {
             return res;
         }
 
-        generateCombination(candidates,target,0,new ArrayList<>());
+        generateCombination(candidates,target,0,new ArrayList<Integer>());
         return res;
     }
 
     private void generateCombination(int[] candidates,int target,int start,List<Integer> cur) {
         if(target == 0) {
-            res.add(new ArrayList<>(cur));
+            res.add(new ArrayList<Integer>(cur));
             return;
         }
         if(target < 0) {
