@@ -46,6 +46,28 @@ public class PerfectSquares279 {
         }
     }
 
+    static class Solution1 {
+        public int numSquares(int n) {
+            int[] mem = new int[n+1];
+
+            List<Integer> list  = generateList(n);
+
+            mem[0] = 0;
+
+            for(int i = 1;i <=n; i++) {
+                mem[i] = Integer.MAX_VALUE;
+                for(int j = 1; j *j <= i ;j++) {
+
+                    mem[i] = Math.min(mem[i],1 + mem[i-j*j]);
+                    
+                }
+            }
+            
+            return mem[n];
+        }
+
+    }
+
     public static void main(String[] args) {
         System.out.println(new Solution().numSquares(12));
     }
