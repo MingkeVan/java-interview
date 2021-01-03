@@ -66,6 +66,18 @@ public class PerfectSquares279 {
             return mem[n];
         }
 
+        private List<Integer> generateList(int n) {
+            int i = 1;
+            int tmp;
+
+            List<Integer> res = new ArrayList<>();
+            while ((tmp = i * i) <= n) {
+                res.add(tmp);
+                i++;
+            }
+            return res;
+        }
+
     }
 
     public static void main(String[] args) {

@@ -24,7 +24,7 @@ Output: 36
 Explanation: 10 = 3 + 3 + 4, 3 × 3 × 4 = 36.
 Note: You may assume that n is not less than 2 and not larger than 58.
  */
-public class Triangle120 {
+public class DecodeWays91 {
 
     static class Solution {
         

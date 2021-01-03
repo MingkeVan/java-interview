@@ -8,7 +8,7 @@ import java.util.List;
  * @decription
  * @date 2020/11/10 11:26
  */
-public class WorkSearch79 {
+public class WordSearch79 {
     int m = 0;
     int n = 0;
 

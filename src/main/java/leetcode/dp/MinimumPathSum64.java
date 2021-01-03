@@ -34,7 +34,7 @@ m == grid.length
 n == grid[i].length
 1 <= m, n <= 200
 0 <= grid[i][j] <= 100 */
-public class Triangle120 {
+public class MinimumPathSum64 {
     static class Solution {
         int m = 0;
         int n = 0;

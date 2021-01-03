@@ -56,7 +56,7 @@ public class SurroundedRegions130 {
             return;
         }
 
-        board[startX][startY] == 'P';
+        board[startX][startY] = 'P';
 
         for( int i = 0; i < direction.length; i++) {
             int newx = startX + direction[i][0]; 

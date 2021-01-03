@@ -349,6 +349,7 @@ java中线程不能直接操作内存中的变量，而是操作自己的工作�
 区别在于：lock支持可中断、可绑定多个条件、支持公平锁。
 
 * http://blueskykong.com/2017/05/14/lock/
+* https://www.cnblogs.com/paddix/p/5405678.html
 
   * 锁的种类有：可重入锁 读写锁 可中断锁 公平锁 独占锁
   * ReentrantLock:可重入 可中断 公平或非公平 独占锁
@@ -378,7 +379,10 @@ java中线程不能直接操作内存中的变量，而是操作自己的工作�
     * 如果cas操作失败，会首先检查对象的mark word是否指向当前线程的虚拟机栈，是说明当前线程已经拥有锁对象，否说明锁对象被其他线程抢占。此时轻量锁不再有效，要膨胀为重量级锁。
 
       ![image-20200222173557300](C:\Users\YingpeiWu\AppData\Roaming\Typora\typora-user-images\image-20200222173557300.png)
-
+  * 其他锁优化：
+    * 适应性自旋
+    * 锁粗化
+    * 锁消除
 ## semaphore
 
 * https://blog.csdn.net/javazejian/article/details/76167357
@@ -391,8 +395,13 @@ java中线程不能直接操作内存中的变量，而是操作自己的工作�
 * https://www.jianshu.com/p/cc308d82cc71
 * ![img](https://upload-images.jianshu.io/upload_images/2615789-02449dc316fe1de6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/837/format/webp)
 * AQS锁的种类：
+AQS是多线程访问共享资源的同步器框架，内部抽象了state共享资源和clh同步队列，使用AQS时只需要定义获取和释放共享资源的行为即可。<br>
+如ReentrantLock将state初始为0；线程获取到资源后，将其置为1；释放后置为0；
+而CountDownLatch将state初始化为N，获取到就减一；直至为0；
   * 独占锁:  ReentrantLock
+    * 内部通过同步fifo队列维护，仅当当前节点的前驱节点是头节点时，才有机会参与获取同步状态；获取不到则等待前驱节点的唤醒或等待中断发生
   * 共享锁：Semaphore\ReentrantReadWriteLock.ReadLock\CyclicBarrier\CountdownPatch
+    * 内部通过同步fifo队列，实现；不同的是，由于是共享获取，队列头节点获取到同步状态后，会继续向后传播；
 * CLH同步队列：
   * 用于管理等待锁的线程队列
   * 非阻塞的FIFO队列，使用链表实现，并通过CAS和自旋锁保证节点插入和移除的原子性
