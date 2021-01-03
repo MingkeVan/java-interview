@@ -218,8 +218,8 @@ LRUcache添加元素主要逻辑：
 实现可以同ArrayList模拟。
 
 ```java
-import java.util.LinkedHashMap;  
-import java.util.Map;  
+import java.com.fanmk.util.LinkedHashMap;  
+import java.com.fanmk.util.Map;  
 public LRUCache<K, V> extends LinkedHashMap<K, V> {  
   private int cacheSize;  
   public LRUCache(int cacheSize) {  

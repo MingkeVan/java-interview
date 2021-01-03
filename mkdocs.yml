@@ -1,21 +1,21 @@
 site_name: JavaInterview
 nav:
     # - Home: index.md
-    - Java基础: interview-java-basic.md
-    - Spring: interview-java-spring.md
-    - Mysql: interview-sql.md
-    - Redis: interview-redis.md
-    - Kafka: interview-kafka.md
-    - Zookeeper基础: interview-zookeeper-basic.md
-    - Zookeeper原理: interview-zookeeper-theory.md
-    - 操作系统: interview-os.md
-    - Linux: interview-os-linux.md
-    - 计算机网络: interview-network.md
-#    - 微服务: interview-microservice.md
-    - 微服务之服务注册与发现: interview-microservice.md
-    - 分布式系统之基本理论: interview-distributed-systems-theory.md
-    - 分布式系统之分布式缓存: interview-distributed-cache.md
-    - 设计模式: interview-design-patterns.md
+    - Java基础: com.fanmk.interview-java-basic.md
+    - Spring: com.fanmk.interview-java-spring.md
+    - Mysql: com.fanmk.interview-sql.md
+    - Redis: com.fanmk.interview-redis.md
+    - Kafka: com.fanmk.interview-kafka.md
+    - Zookeeper基础: com.fanmk.interview-zookeeper-basic.md
+    - Zookeeper原理: com.fanmk.interview-zookeeper-theory.md
+    - 操作系统: com.fanmk.interview-os.md
+    - Linux: com.fanmk.interview-os-linux.md
+    - 计算机网络: com.fanmk.interview-network.md
+#    - 微服务: com.fanmk.interview-microservice.md
+    - 微服务之服务注册与发现: com.fanmk.interview-microservice.md
+    - 分布式系统之基本理论: com.fanmk.interview-distributed-systems-theory.md
+    - 分布式系统之分布式缓存: com.fanmk.interview-distributed-cache.md
+    - 设计模式: com.fanmk.interview-design-patterns.md
     - 其他: others.md
     - About: about.md
 theme: readthedocs

@@ -165,6 +165,6 @@ https://news.ycombinator.com/item?id=22273224
 
 https://eli.thegreenplace.net/
 
-jvm系列文章 https://shipilev.net/jvm/anatomy-quarks/
+jvm系列文章 https://shipilev.net/com.fanmk.jvm/anatomy-quarks/
 
 搜索引擎 https://www.iaria.org/conferences2018/filesDBKDA18/AndreasSchmidt_Tutorial_SearchEngine.pdf
