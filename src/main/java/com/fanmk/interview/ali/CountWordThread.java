@@ -59,11 +59,4 @@ public class CountWordThread implements Runnable {
         System.out.println("第" + this.index + "个任务完成");
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        Map<String, LongAdder> map = new ConcurrentHashMap<>();
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        new Thread(new CountWordThread(countDownLatch, 0, "If not now when if not me who", map)).start();
-        countDownLatch.await();
-        System.out.println(map);
-    }
 }
